@@ -1,27 +1,30 @@
-<header class="header bg-black flex-box">
-    <section class="header-left flex-box flex-grow">
-        <h1 class="fg-white title">My PHP Project</h1>
-    </section>
-    <section class="header-right flex-box flex-grow">
-
-        <section class="header-nav flex-grow flex-box">
-            <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
-                Home
-            </a>
-            <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
-                About
-            </a>
-            <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
-                Login
-            </a>
+<section class="header-wrapper">
+    <header class="header bg-black flex-box">
+        <section class="header-left flex-box flex-grow">
+            <h1 class="fg-white title">My PHP Project</h1>
         </section>
-        <button class="button fg-white menu-button" onclick="menuButtonFunction()">
-            <img src="img/menu.ico" alt="aaa">
-        </button>
-    </section>
-</header>
+        <section class="header-right flex-box flex-grow">
 
-<nav class="nav-bar flex-box bg-black none" id="nav-bar">
-    <a href=""></a>
-    <button></button>
+            <section class="header-nav flex-grow flex-box">
+                <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
+                    Home
+                </a>
+                <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
+                    About
+                </a>
+                <a href="index.php" class="menu-bar flex-grow fg-white flex-box flex-center">
+                    Login
+                </a>
+            </section>
+            <button class="button fg-white menu-button" onmouseover="menuFunction()">
+                <img src="img/menu.ico" alt="aaa">
+            </button>
+        </section>
+    </header>
+</section>
+
+<nav class="nav-bar-container flex-box bg-black none" id="nav-bar">
+    <a href="" class="menu-bar fg-white flex-grow flex-box flex-center">Home</a>
+    <a href="" class="menu-bar fg-white flex-grow flex-box flex-center">About</a>
+    <a href="" class="menu-bar fg-white flex-grow flex-box flex-center">Login</a>
 </nav>

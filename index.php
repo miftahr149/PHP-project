@@ -11,7 +11,7 @@
 
 <body>
     <?php include('template/header.html') ?>
-    <main class="main">
+    <main class="main flex-grow">
         <section id="about">
             
         </section>
