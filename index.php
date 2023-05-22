@@ -9,16 +9,12 @@
     <title>PHP Project</title>
 </head>
 
-<body class="">
+<body>
     <?php include('template/header.html') ?>
-    
     <main class="main">
-        Main
+        <section id="about">
+            
+        </section>
     </main>
-
-    <footer class="footer">
-        Footer
-    </footer>
-</body>
-
-</html>
+    <script src="js/index.js"></script>
+    <?php include('template/footer.html') ?>
