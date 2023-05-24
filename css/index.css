@@ -18,7 +18,7 @@
 
 body {
     min-height: 150vh;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: 'Roboto';
     
     display: flex;
@@ -75,6 +75,10 @@ p {
 .img {
     width: 100%;
     height: auto;
+}
+
+.container {
+    padding: 1rem 0;
 }
 
 /* General Class */
@@ -215,8 +219,19 @@ p {
     text-indent: 4rem;
 }
 
+/* Footer */
 .footer {
-    background-color: blue;
+    padding: 5vh 20vh;
+    flex-direction: column;
+    /* gap: 1rem; */
+}
+
+.contact-card {
+    gap: 1rem;
+}
+
+.footer__end {
+    text-align:end;
 }
 
 @media screen and (min-width: 769px) {
@@ -228,7 +243,7 @@ p {
         display: none;
     }
 
-    .main--box {
+    .container {
         padding: 1rem 15vw;
     }
 }

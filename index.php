@@ -14,7 +14,7 @@
     <?php include('template/header.html') ?>
     <main class="main flex-grow">
 
-        <section class="home flex-box main--box">
+        <section class="home flex-box container">
             <section class="home__left flex-box">
                 <h2 class="home__header">MealMaster</h2>
                 <p>share your recipe to the world</p>
@@ -25,7 +25,7 @@
             </section>
         </section>
 
-        <section class="about main--box flex-box">
+        <section class="about container flex-box">
             <section class="about__right flex-box flex-center flex-grow">
                 <img src="img/Dishes.png" alt="" height="256" width=256 class="img">
             </section>
