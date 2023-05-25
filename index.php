@@ -14,7 +14,7 @@
     <?php include('template/header.html') ?>
     <main class="main flex-grow">
 
-        <section class="home flex-box container">
+        <section class="home flex-box container bg-black fg-white">
             <section class="home__left flex-box">
                 <h2 class="home__header">MealMaster</h2>
                 <p>share your recipe to the world</p>
