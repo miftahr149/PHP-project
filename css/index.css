@@ -82,6 +82,11 @@ p {
     padding: 1rem 2rem;
 }
 
+.container__header {
+    font-size: clamp(2rem, 5vw, 3rem);
+    padding-bottom: 1rem;
+}
+
 /* General Class */
 
 /* Header */
@@ -93,6 +98,7 @@ p {
 
 .header {
     position: fixed;
+
     padding: 0.5rem;
     top: 0px;
     left: 0px;
@@ -162,7 +168,7 @@ p {
 .nav-bar-menu {
     padding: 1rem;
     border-radius: 0;
-    border: 1px solid var(--white);
+    border-bottom: 1px solid var(--white);
     text-align: center;
 }
 
@@ -174,9 +180,14 @@ p {
     min-height: 60vh;
 }
 
+.main {
+    display: flex;
+    flex-direction: column;
+}
+
 .home {
     gap:5rem;
-    justify-content:end;
+    justify-content:space-around;
     flex-direction: column-reverse;
 }
 
@@ -194,6 +205,7 @@ p {
 
 .about {
     gap: 5rem;
+    flex-grow: 1;
     flex-direction: column;
     justify-content: center;
 }
@@ -202,11 +214,6 @@ p {
     flex-direction: column;
     justify-content: center;
     width: auto;
-}
-
-.about__header {
-    padding-bottom: 1rem;
-    font-size: 3rem;
 }
 
 .about__wrapper {
@@ -225,6 +232,11 @@ p {
 /* Footer */
 .footer {
     flex-direction: column;
+    flex-grow: 1;
+}
+
+.contact__header {
+    font-size: 3rem;
 }
 
 .contact-card {
@@ -233,6 +245,11 @@ p {
 
 .footer__end {
     text-align:end;
+}
+
+.copyright {
+    padding-top: 2rem;
+    font-size: 1.1rem;
 }
 
 @media screen and (min-width: 769px) {
@@ -259,5 +276,9 @@ p {
 
     .container {
         padding: 1rem 15vw;
+    }
+
+    .header {
+        padding: .5rem 15vw;
     }
 }
