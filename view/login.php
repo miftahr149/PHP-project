@@ -21,17 +21,17 @@
             </p>
         </header>
 
-        <form action="login.php" method=post class="flex-grow">
-            <section>
+        <form action="login.php" method=post class="form flex-grow flex-box">
+            <section class="">
                 <label for="username" class="form__label">
                     Username: 
                 </label>
                 <input type="text" name="username" class="form__input">
             </section>
 
-            <section>
-                <label for="password">Password: </label>
-                <input type="password" name="password">
+            <section class="">
+                <label for="password" class="form__label">Password: </label>
+                <input type="password" name="password" class="form__input">
             </section>
 
             <input type="submit" name="Login" value="login" class="button">
