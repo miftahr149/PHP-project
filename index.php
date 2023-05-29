@@ -20,10 +20,10 @@
             <section class="header__right flex-box flex-grow">
 
                 <section class="header__nav flex-grow flex-box">
-                    <a href="view/login.php" class="menu-bar flex-grow fg-white flex-box flex-center">
+                    <a href="view/login.php" class="menu-bar flex-grow bg-black flex-box flex-center">
                         Log in
                     </a>
-                    <a href="view/register.php" class="menu-bar flex-grow fg-white flex-box flex-center">
+                    <a href="view/register.php" class="menu-bar flex-grow  flex-box flex-center bg-black">
                         Register
                     </a>
                 </section>
@@ -31,8 +31,8 @@
                     <img src="img/menu.ico" alt="aaa">
 
                     <nav class="nav-bar bg-black" id="nav-bar">
-                        <a href="view/login.php" class="nav-bar-menu menu-bar fg-white flex-grow">Log in</a>
-                        <a href="view/register.php" class="nav-bar-menu menu-bar fg-white flex-grow">Register</a>
+                        <a href="view/login.php" class="nav-bar-menu menu-bar bg-black flex-grow">Log in</a>
+                        <a href="view/register.php" class="nav-bar-menu menu-bar bg-black flex-grow">Register</a>
                     </nav>
                 </button>
             </section>
@@ -60,13 +60,39 @@
             <section class="about__left flex-box flex-grow">
                 <h2 class="about__header container__header">About</h2>
                 <p class="about__description">
-                    Our project aims to create an innovative recipe management website called MealMaster, where users can organize, discover, and share their favorite recipes. With MealMaster, users can effortlessly store and categorize their recipes, making meal planning and cooking a breeze. Our platform offers a vibrant community where users can share their culinary creations, explore a wide range of public recipes, and engage in rating and reviews. With features like favorites and a convenient shopping list generator, MealMaster empowers users to unleash their culinary creativity and embark on a delightful gastronomic journey.
+                    MealMaster is a user-friendly recipe management platform that simplifies organization, inspires creativity, and connects food enthusiasts in a vibrant community.
                 </p>
             </section>
         </section>
 
-        <section class="testimony container main-box bg-black fg-white">
+        <section class="testimony container main--box">
             <h2 class="container__header">Testimony</h2>
+            <section class="card-container flex-box">
+                <section class="testimony-card flex-box">
+                    <p class="card__content">
+                        MealMaster is a game-changer for my cooking - it's easy
+                        to use, keeps me organized, and sparks my culinary
+                        creativity!
+                    </p>
+                    <p class="card__name">Sarah W., Cooking Enthusiast</p>
+                </section>
+                <section class="testimony-card flex-box">
+                    <p class="card__content">
+                        Thanks to MealMaster, cooking has become a delightful
+                        adventure, with an array of recipes at my fingertips
+                        and a seamless organization system.
+                    </p>
+                    <p class="card__name">John P., Food Lover</p>
+                </section>
+                <section class="testimony-card flex-box">
+                    <p class="card__content">
+                        MealMaster is my secret ingredient for culinary success
+                        - it simplifies recipe management and fuels my
+                        inspiration in the kitchen.
+                    </p>
+                    <p class="card__name">Lisa M., Cooking Enthusiast</p>
+                </section>
+            </section>
         </section>
     </main>
 

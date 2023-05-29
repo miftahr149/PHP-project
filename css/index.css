@@ -32,14 +32,12 @@ p {
 /* Utility Class */
 .bg-black {
     background-color: var(--black);
+    color: var(--white);
 }
 
 .bg-white {
     background-color: var(--white);
-}
-
-.fg-white {
-    color: var(--white);
+    color: var(--black);
 }
 
 .flex-box {
@@ -176,7 +174,6 @@ p {
 /* Main */
 
 .main--box {
-    padding: 1rem 0;
     min-height: 60vh;
 }
 
@@ -229,6 +226,29 @@ p {
     text-indent: 4rem;
 }
 
+.card-container {
+    display: grid;
+    grid-template-rows: repeat(1fr);
+    gap: 2rem;
+}
+
+.testimony-card {
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+
+/* .card__content {
+    text-align: justify;
+} */
+
+
+
+.card__name::before {
+    content: "-- ";
+}
+
+
 /* Footer */
 .footer {
     flex-direction: column;
@@ -280,5 +300,10 @@ p {
 
     .header {
         padding: .5rem 15vw;
+    }
+
+    .card-container {
+        grid-template-columns: 1fr 1fr 1fr;
+
     }
 }
