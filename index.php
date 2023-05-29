@@ -20,10 +20,10 @@
             <section class="header__right flex-box flex-grow">
 
                 <section class="header__nav flex-grow flex-box">
-                    <a href="view/login.php" class="menu-bar flex-grow bg-black flex-box flex-center">
+                    <a href="view/login.php" class="menu-bar flex-grow flex-box flex-center">
                         Log in
                     </a>
-                    <a href="view/register.php" class="menu-bar flex-grow  flex-box flex-center bg-black">
+                    <a href="view/register.php" class="menu-bar flex-grow  flex-box flex-center">
                         Register
                     </a>
                 </section>
@@ -41,7 +41,7 @@
 
     <main class="main flex-grow">
 
-        <section class="home flex-box container bg-black fg-white">
+        <section class="home container flex-box bg-black fg-white">
             <section class="home__left flex-box">
                 <h2 class="container__header">
                     Unleash Your Culinary Creativity with MealMaster
@@ -67,9 +67,9 @@
 
         <section class="testimony container main--box">
             <h2 class="container__header">Testimony</h2>
-            <section class="card-container flex-box">
+            <section class="card-container">
                 <section class="testimony-card flex-box">
-                    <p class="card__content">
+                    <p class="card__content flex-grow">
                         MealMaster is a game-changer for my cooking - it's easy
                         to use, keeps me organized, and sparks my culinary
                         creativity!
@@ -77,7 +77,7 @@
                     <p class="card__name">Sarah W., Cooking Enthusiast</p>
                 </section>
                 <section class="testimony-card flex-box">
-                    <p class="card__content">
+                    <p class="card__content flex-grow">
                         Thanks to MealMaster, cooking has become a delightful
                         adventure, with an array of recipes at my fingertips
                         and a seamless organization system.
@@ -85,7 +85,7 @@
                     <p class="card__name">John P., Food Lover</p>
                 </section>
                 <section class="testimony-card flex-box">
-                    <p class="card__content">
+                    <p class="card__content flex-grow">
                         MealMaster is my secret ingredient for culinary success
                         - it simplifies recipe management and fuels my
                         inspiration in the kitchen.
@@ -94,6 +94,7 @@
                 </section>
             </section>
         </section>
+
     </main>
 
     <footer class="footer bg-black fg-white flex-box container">
