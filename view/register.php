@@ -1,3 +1,43 @@
+<?php 
+
+function postMethod() {
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') return;
+
+    $username = getFilterInput('username', FILTER_SANITIZE_SPECIAL_CHARS);
+    $password = getFilterInput('password', FILTER_SANITIZE_SPECIAL_CHARS);
+    $confirm_password = getFilterInput('password2', 
+                                       FILTER_SANITIZE_SPECIAL_CHARS);
+    
+    if (empty($username) or empty($password) or empty($confirm_password)) {
+        sendError("You haven't enter your username or password!");
+    }
+
+    if ($password != $confirm_password) {
+        sendError("your password doesn't match with the confirm one!");
+    }
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    
+    include("../utility/database.php");
+    $sql = "INSERT INTO account (username, password)
+            VALUES ('$username', '$password')";
+    mysqli_query($conn, $sql);
+
+    header("Location: login.php");
+}
+
+function getFilterInput(string $name, int $filter) {
+    return filter_input(INPUT_POST, $name, $filter);
+}
+
+function sendError(string $error) {
+    echo 
+    "
+    <p class='error'>{$error}</p>
+    ";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +51,7 @@
 </head>
 
 <body>
+
     <section class="login-page flex-box">
         <header class="login__header">
             <img src="../favicon.ico" alt="">
@@ -33,6 +74,8 @@
                 </label>
                 <input type="password" name="password2" class="form__input">
             </section>
+
+            <?php postMethod() ?>
 
             <input type="submit" value="Register" class="submit-button button">
         </form>

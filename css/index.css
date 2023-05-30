@@ -320,13 +320,13 @@ p {
     color: var(--white);
 }
 
-/* Register Page */
-.register-page {
-    border: 1px solid black;
-    margin: auto;
-    width: 60vw;
-
-    flex-direction: column;
+.error {
+    background-color: red;
+    color: var(--white);
+    font-size: 0.9;
+    padding: 0.5rem;
+    border-radius: 10px;
+    text-align: center;
 }
 
 @media screen and (min-width: 769px) {
