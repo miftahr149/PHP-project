@@ -16,12 +16,10 @@
         <header class=login__header>
             <img src="../favicon.ico" alt="icon">
             <h1 class="login__header">MealMaster</h1>
-            <p class="slogan">
-                Unleash Your Culinary Creativity with MealMaster
-            </p>
+            <p class="slogan">Login Page</p>
         </header>
 
-        <form action="login.php" method=post class="form flex-grow flex-box">
+        <form action="<?php $_SERVER['PHP_SELF'] ?>" method=post class="form flex-grow flex-box">
             <section class="">
                 <label for="username" class="form__label">
                     Username:
@@ -34,13 +32,13 @@
                 <input type="password" name="password" class="form__input">
             </section>
 
-            <input type="submit" name="Login" value="login" class="button login-button">
+            <input type="submit" value="Login" class="button submit-button">
         </form>
 
         <footer>
             <p>
                 Don't have account?
-                <a href=./register.php class="nowrap"> Register </a>
+                <a href=./register.php> Register </a>
             </p>
 
             <p class="copyright flex-box flex-center">

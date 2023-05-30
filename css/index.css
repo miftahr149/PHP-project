@@ -306,7 +306,7 @@ p {
     padding: 0.5rem;
 }
 
-.login-button {
+.submit-button {
     background-color: greenyellow;
     border-radius: 10px;
     margin: 0.5rem;
@@ -315,9 +315,18 @@ p {
     font-weight: bold;
 }
 
-.login-button:hover {
+.submit-button:hover {
     background-color: green;
     color: var(--white);
+}
+
+/* Register Page */
+.register-page {
+    border: 1px solid black;
+    margin: auto;
+    width: 60vw;
+
+    flex-direction: column;
 }
 
 @media screen and (min-width: 769px) {
