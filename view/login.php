@@ -1,3 +1,47 @@
+<?php
+
+include("../utility/function.php");
+
+function postMethod()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") return;
+
+    $username = filter_input(
+        INPUT_POST,
+        "username",
+        FILTER_SANITIZE_SPECIAL_CHARS
+    );
+
+    $password = filter_input(
+        INPUT_POST,
+        "password",
+        FILTER_SANITIZE_SPECIAL_CHARS
+    );
+
+    if (empty($username) or empty($password)) {
+        sendError("You haven't enter username or password!");
+    }
+}
+
+function getAccount(string $username) : null | array | false
+{   
+    include("database.php");
+    $sql = "SELECT * FROM account WHERE username = '$username'";
+
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) == 0) {
+        echo "Incorrect Username!";
+        return null;
+    }
+
+    $row = mysqli_fetch_assoc($result);
+    return $row;
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 

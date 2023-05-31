@@ -1,13 +1,31 @@
-<?php 
+<?php
 
-function postMethod() {
+include("../utility/function.php");
+
+function postMethod()
+{
     if ($_SERVER['REQUEST_METHOD'] != 'POST') return;
 
-    $username = getFilterInput('username', FILTER_SANITIZE_SPECIAL_CHARS);
-    $password = getFilterInput('password', FILTER_SANITIZE_SPECIAL_CHARS);
-    $confirm_password = getFilterInput('password2', 
-                                       FILTER_SANITIZE_SPECIAL_CHARS);
-    
+    $username = filter_input(
+        INPUT_POST,
+        'username',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+    $password = filter_input(
+        INPUT_POST,
+        'password',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+    $confirm_password = filter_input(
+        INPUT_POST,
+        'password2',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+
+
     if (empty($username) or empty($password) or empty($confirm_password)) {
         sendError("You haven't enter your username or password!");
     }
@@ -17,24 +35,13 @@ function postMethod() {
     }
 
     $password = password_hash($password, PASSWORD_DEFAULT);
-    
+
     include("../utility/database.php");
     $sql = "INSERT INTO account (username, password)
             VALUES ('$username', '$password')";
     mysqli_query($conn, $sql);
 
     header("Location: login.php");
-}
-
-function getFilterInput(string $name, int $filter) {
-    return filter_input(INPUT_POST, $name, $filter);
-}
-
-function sendError(string $error) {
-    echo 
-    "
-    <p class='error'>{$error}</p>
-    ";
 }
 ?>
 
