@@ -1,97 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    /* Padding */
-    --padding-small: 0.5rem;
-    --padding: 1rem;
-
-    /* Color */
-    --white: white;
-    --black: black;
-}
-
-body {
-    min-height: 100vh;
-    font-size: 1.2rem;
-    font-family: 'Roboto';
-    
-    display: flex;
-    flex-direction: column;
-}
-
-p {
-    word-wrap: break-word;
-}
-
-/* Utility Class */
-.bg-black {
-    background-color: var(--black);
-    color: var(--white);
-}
-
-.bg-white {
-    background-color: var(--white);
-    color: var(--black);
-}
-
-.flex-box {
-    display: flex;
-}
-
-.flex-grow {
-    flex-grow: 1;
-}
-
-.flex-center {
-    align-items: center;
-    justify-content: center;
-}
-
-.button {
-    background-color: transparent;
-    border: 0;
-    color: inherit;
-}
-
-.button:focus {
-    cursor: pointer;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.test {
-    background-color: blue;
-}
-
-.img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-}
-
-.container {
-    padding: 3rem 2rem;
-}
-
-.container__header {
-    font-size: clamp(2rem, 5vw, 3rem);
-    padding-bottom: 1rem;
-}
-
-.nowrap {
-    white-space: nowrap;
-}
-
-/* General Class */
-
 /* Header */
 
 .header__wrapper {
@@ -268,66 +174,6 @@ p {
     font-size: 1.1rem;
 }
 
-/* Login Page */
-.login-page {
-    width: 80vw;
-    margin: auto;
-
-    border: 1px solid black;
-    border-radius: 10px;
-
-    padding: 1rem 10vw;
-
-    flex-direction: column;
-}
-
-.login__header {
-    text-align: center;
-    padding: 1rem 0;
-}
-
-.slogan {
-    display: none;
-    font-size: 0.9rem;
-}
-
-.form {
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.form__label {
-    display: block;
-}
-
-.form__input {
-    display: block;
-    width: 100%;
-    padding: 0.5rem;
-}
-
-.submit-button {
-    background-color: greenyellow;
-    border-radius: 10px;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-}
-
-.submit-button:hover {
-    background-color: green;
-    color: var(--white);
-}
-
-.error {
-    background-color: red;
-    color: var(--white);
-    font-size: 0.9;
-    padding: 0.5rem;
-    border-radius: 10px;
-    text-align: center;
-}
 
 @media screen and (min-width: 769px) {
     .header__nav {
@@ -351,10 +197,6 @@ p {
         width: 50%;
     }
 
-    .container {
-        padding: 3rem 15vw;
-    }
-
     .header {
         padding: .5rem 15vw;
     }
@@ -362,14 +204,5 @@ p {
     .card-container {
         grid-template-columns: 1fr 1fr 1fr;
 
-    }
-
-    .login-page {
-        margin: auto;
-        width: 40vw;
-    }
-
-    .slogan {
-        display: block;
     }
 }
