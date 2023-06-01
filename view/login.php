@@ -1,10 +1,11 @@
 <?php
 
 include("../utility/function.php");
+session_start();
 
 function postMethod()
 {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") return;
+    if ($_SERVER["REQUEST_METHOD"] != "POST") return;
 
     $username = filter_input(
         INPUT_POST,
@@ -21,21 +22,33 @@ function postMethod()
     if (empty($username) or empty($password)) {
         sendError("You haven't enter username or password!");
     }
+
+    $user_data = getAccount($username);
+    if (empty($user_data)) return;
+
+    if (!password_verify($password, $user_data['password'])) {
+        sendError("Incorect Password!");
+        return;
+    }
+
+    $_SESSION["user_data"] = $user_data;
+    header("Location: home.php");
 }
 
 function getAccount(string $username) : null | array | false
 {   
-    include("database.php");
+    include("../utility/database.php");
     $sql = "SELECT * FROM account WHERE username = '$username'";
 
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 0) {
-        echo "Incorrect Username!";
+        sendError('Incorect username!');
         return null;
     }
 
     $row = mysqli_fetch_assoc($result);
+    mysqli_close($conn);
     return $row;
 }
 
@@ -78,6 +91,8 @@ function getAccount(string $username) : null | array | false
 
             <input type="submit" value="Login" class="button submit-button">
         </form>
+
+        <?php postMethod() ?>
 
         <footer>
             <p>

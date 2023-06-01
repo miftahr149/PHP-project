@@ -40,6 +40,7 @@ function postMethod()
     $sql = "INSERT INTO account (username, password)
             VALUES ('$username', '$password')";
     mysqli_query($conn, $sql);
+    mysqli_close($conn);
 
     header("Location: login.php");
 }
