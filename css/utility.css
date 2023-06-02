@@ -25,6 +25,10 @@ body {
     flex-direction: column;
 }
 
+img {
+    display: block;
+}
+
 p {
     word-wrap: break-word;
 }
