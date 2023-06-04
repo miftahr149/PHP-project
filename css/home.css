@@ -1,5 +1,3 @@
-/* header */
-
 :root {
     --header-bg-color: #161b22;
     --navbar-bg-color: #0d1117;
@@ -10,9 +8,17 @@ body {
     min-height: 150vh;
 }
 
+
+/* Header */
 .header {
     background-color: var(--header-bg-color);
     padding: 1rem 2rem;
+}
+
+.header__left,
+.header__right,
+.main__navbar {
+    display: none;
 }
 
 .header__left {
@@ -37,10 +43,31 @@ body {
     border-radius: 50%;
 }
 
+.menu-button:focus-within {
+    color: inherit;
+}
+
+.menu {
+    background-color: var(--header-bg-color);
+}
+
+.menu__item {
+    padding: 1rem 2rem;
+    display: block;
+    background-color: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
 /* main */
 .main {
     display: grid;
-    grid-template-columns: 25vw 1fr;
+}
+
+.main-box {
+    background-color: var(--header-bg-color);
+    padding: 1rem;
+    border-radius: 10px;
 }
 
 /* Navbar */
@@ -88,4 +115,32 @@ body {
 
 .main__content {
     padding: 1rem 1.2rem;
+}
+
+/* repo */
+.user-repo {
+    display: block;
+}
+
+@media screen and (min-width: 769px) {
+    .header__left,
+    .header__right {
+        display: flex;
+    }
+
+    .main__navbar {
+        display: block;
+    }
+
+    .header-tiny {
+        display: none;
+    }
+
+    .main {
+        grid-template-columns: 25vw 1fr;
+    }
+
+    .user-repo {
+        display: none;
+    }
 }

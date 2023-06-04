@@ -71,8 +71,8 @@ function getAccount(string $username) : null | array | false
 <body>
 
     <section class="login-page flex-box">
-        <header class=login__header>
-            <img src="../favicon.ico" alt="icon">
+        <header class="login__header">
+            <img src="../favicon.ico" alt="icon" width=64 height=64>
             <h1 class="login__header">MealMaster</h1>
             <p class="slogan">Login Page</p>
         </header>

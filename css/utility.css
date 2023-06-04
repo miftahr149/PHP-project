@@ -63,8 +63,21 @@ p {
     color: inherit;
 }
 
-.button:focus {
+.button:hover {
     cursor: pointer;
+}
+
+.button--white-hover {
+    transition: all 500ms ease-in;
+}
+
+.button--white-hover:hover {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.button--underline-hover:hover {
+    text-decoration: underline;
 }
 
 .img {
@@ -80,6 +93,10 @@ p {
 .container__header {
     font-size: clamp(2rem, 5vw, 3rem);
     padding-bottom: 1rem;
+}
+
+.none {
+    display: none;
 }
 
 @media screen and (min-width: 769px) {
