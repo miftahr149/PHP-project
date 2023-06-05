@@ -74,10 +74,15 @@ function getUserData(string $property): mixed
             <div class="user-repo">
                 <p>Repositories</p>
                 <div class="main-box">
-                    <a href="" class="menu__item button button--underline-hover">Dummy</a>
-                    <a href="" class="menu__item button button--underline-hover">Dummy</a>
-                    <a href="" class="menu__item button button--underline-hover">Dummy</a>
+                    <a href="" class="create-ingredients flex-box flex-center">
+                        <img src="../img/plus.ico" alt="profile" title="Profile">
+                        <p class="flex-grow">Create Ingredients</p>
+                    </a>
                 </div>
+            </div>
+
+            <div class="trending">
+                <h3>Trending Ingredients</h3>
             </div>
         </div>
     </main>

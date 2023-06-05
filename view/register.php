@@ -39,8 +39,8 @@ function postMethod()
     include("../utility/database.php");
     $sql = "INSERT INTO account (username, password)
             VALUES ('$username', '$password')";
-    mysqli_query($conn, $sql);
-    mysqli_close($conn);
+    $conn->query($sql);
+    $conn->close();
 
     header("Location: login.php");
 }

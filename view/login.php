@@ -39,8 +39,7 @@ function getAccount(string $username) : null | array | false
 {   
     include("../utility/database.php");
     $sql = "SELECT * FROM account WHERE username = '$username'";
-
-    $result = mysqli_query($conn, $sql);
+    $result = $conn->query($sql);
 
     if (mysqli_num_rows($result) == 0) {
         sendError('Incorect username!');
@@ -48,7 +47,7 @@ function getAccount(string $username) : null | array | false
     }
 
     $row = mysqli_fetch_assoc($result);
-    mysqli_close($conn);
+    $conn->close();
     return $row;
 }
 
