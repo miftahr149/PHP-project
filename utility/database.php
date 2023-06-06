@@ -35,8 +35,8 @@ function createTable(mysqli $conn): void
         title VARCHAR(255) NOT NULL,
         description TEXT,
         ingredients TEXT,
-        instructions TEXT,
-        views INT(10),
+        instruction TEXT,
+        views INT(10) DEFAULT 0,
         created_at DATE DEFAULT CURRENT_TIMESTAMP
     );";
 

@@ -3,6 +3,12 @@ body {
     color: var(--white);
 }
 
+.title {
+    border-bottom: 1px solid var(--white);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
 .create {
     display: flex;
     flex-direction: column;
@@ -20,19 +26,17 @@ body {
 .create__item textarea {
     padding: 1.3rem 2rem;
     background-color: inherit;
+    font-size: 1.2rem;
     color: inherit;
     font-family: inherit;
     border: 1px solid var(--white);
     border-radius: 10px;
+    line-height: 1.5;
 }
 
 .create__item textarea {
-    max-width: 100%;
-}
-
-.create__item input::placeholder {
-    color: inherit;
-    opacity: 1;
+    resize: none;
+    overflow: hidden;
 }
 
 .create-button {
