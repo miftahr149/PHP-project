@@ -15,7 +15,7 @@
     <section class="header__wrapper">
         <header class="header bg-black flex-box container">
             <section class="header__left flex-box flex-grow">
-                <img src="favicon.ico" alt="">
+                <img src="favicon.ico" alt="" width=32 height=32>
                 <h1 class="fg-white title">MealMaster</h1>
             </section>
             <section class="header__right flex-box flex-grow">

@@ -1,62 +1,9 @@
 :root {
-    --header-bg-color: #161b22;
     --navbar-bg-color: #0d1117;
-    --create-ingredients-bg-color: #238636;
 }
 
 body {
     min-height: 150vh;
-}
-
-
-/* Header */
-.header {
-    background-color: var(--header-bg-color);
-    padding: 1rem 2rem;
-}
-
-.header__left,
-.header__right,
-.main__navbar {
-    display: none;
-}
-
-.header__left {
-    gap: 1rem;
-}
-
-.header__menu {
-    color: inherit;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 10px;
-    padding: 0 0.5rem;
-    transition: all 500ms ease-out;
-}
-
-.header__menu:hover {
-    background-color: white;
-    color: var(--header-bg-color);
-}
-
-.profile img {
-    border-radius: 50%;
-}
-
-.menu-button:focus-within {
-    color: inherit;
-}
-
-.menu {
-    background-color: var(--header-bg-color);
-}
-
-.menu__item {
-    padding: 1rem 2rem;
-    display: block;
-    background-color: inherit;
-    color: inherit;
-    text-decoration: none;
 }
 
 /* main */
@@ -70,9 +17,18 @@ body {
     border-radius: 10px;
 }
 
+.main-box--wrapper {
+    margin-bottom: 3rem;
+}
+
+.main-box--wrapper h3 {
+    padding-bottom: 1rem;
+}
+
 /* Navbar */
 
 .main__navbar {
+    display: none;
     background-color: var(--navbar-bg-color);
     height: 100vh;
 
@@ -122,18 +78,11 @@ body {
     display: block;
 }
 
+
+
 @media screen and (min-width: 769px) {
-    .header__left,
-    .header__right {
-        display: flex;
-    }
-
     .main__navbar {
-        display: block;
-    }
-
-    .header-tiny {
-        display: none;
+        display:block;
     }
 
     .main {

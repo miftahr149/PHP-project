@@ -32,10 +32,11 @@ function createTable(mysqli $conn): void
     #creating ingridients table
     $sql = "CREATE TABLE recipes (
         author CHAR(25) NOT NULL,
-        tittle VARCHAR(255) NOT NULL,
+        title VARCHAR(255) NOT NULL,
         description TEXT,
-        ingridients TEXT,
+        ingredients TEXT,
         instructions TEXT,
+        views INT(10),
         created_at DATE DEFAULT CURRENT_TIMESTAMP
     );";
 
