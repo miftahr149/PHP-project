@@ -2,6 +2,7 @@
 
 session_start();
 include("../utility/function.php");
+include("../utility/database.php");
 isLog();
 
 function getUserData(string $property): mixed

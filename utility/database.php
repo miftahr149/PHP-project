@@ -44,21 +44,25 @@ function createTable(mysqli $conn): void
     else echo "Error Creating Recipes Table";
 }
 
-$db_server = "localhost";
-$db_user = "root";
-$db_pass = "";
+function getConn(): mysqli
+{
+    $db_server = "localhost";
+    $db_user = "root";
+    $db_pass = "";
 
 
-$conn = new mysqli($db_server, $db_user, $db_pass);
+    $conn = new mysqli($db_server, $db_user, $db_pass);
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
 
-$databaseName = "mealmaster";
-if (!isDatabaseExist($databaseName, $conn)) {
-    createDatabase($databaseName, $conn);
+    $databaseName = "mealmaster";
+    if (!isDatabaseExist($databaseName, $conn)) {
+        createDatabase($databaseName, $conn);
+        $conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);
+        createTable($conn);
+    }
     $conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);
-    createTable($conn);
+    return $conn;
 }
-$conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);

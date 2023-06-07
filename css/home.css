@@ -8,7 +8,7 @@ body {
 
 /* main */
 .main {
-    display: grid;
+    display: flex;
 }
 
 .main-box {
@@ -32,16 +32,19 @@ body {
     background-color: var(--navbar-bg-color);
     height: 100vh;
 
-    padding: 1.5rem .2rem;
+    padding: 1.5rem 2rem;
 
     position: sticky;
     top: 0;
     left: 0;
+
+    min-width: fit-content;
 }
 
 .create-ingredients {
     gap: 1rem;
     margin: auto;
+    width: fit-content;
     border-radius: 10px;
     padding: .2rem 1rem;
     align-items: center;
@@ -51,6 +54,34 @@ body {
     text-decoration: none;
     width: 80%;
     transition: all 500ms ease-in-out;
+}
+
+.user-recipes-box {
+    margin-top: 2rem;
+}
+
+.user-recipes-box--padding {
+    padding: 1rem 3rem;
+}
+
+.user-recipes-box p {
+    font-weight: bold;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--white);
+}
+
+
+.user-recipe {
+    color: inherit;
+    display: block;
+    padding: 1rem 0;
+    background-color: inherit;
+    border: 0;
+    text-decoration: none;
+}
+
+.user-recipe:hover {
+    text-decoration: underline;
 }
 
 .create-ingredients:hover {
@@ -83,10 +114,6 @@ body {
 @media screen and (min-width: 769px) {
     .main__navbar {
         display:block;
-    }
-
-    .main {
-        grid-template-columns: 25vw 1fr;
     }
 
     .user-repo {

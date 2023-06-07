@@ -1,4 +1,4 @@
-<?php include("../template/test.php") ?>
+<?php include("../template/home-head.php") ?>
 <link rel="stylesheet" href="../css/create.css?v=<?php echo time() ?>">
 <title>Create</title>
 </head>
@@ -53,7 +53,8 @@
 
 function getGetMethod():void
 {
-    if ($_SERVER['REQUEST_METHOD'] != "GET") return;
+    if ($_SERVER['REQUEST_METHOD'] != "GET" and
+        isset($_GET['submit'])) return;
 
     foreach($_POST as $key => $value) {
         echo "{$key} = {$value} <br>";
@@ -70,12 +71,14 @@ function getGetMethod():void
         return;
     }
 
-    include("../utility/database.php");
+    $conn = getConn();
     $author = getUserData('username');
     $sql = "INSERT INTO recipes (author, title, description, ingredients, instruction)
             VALUES ('$author', '$title', '$desc', '$ingredients', '$instruction');";
     $conn->query($sql);
     $conn->close();
+
+    header("Location: home.php");
 }
 
 ?>

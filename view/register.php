@@ -1,49 +1,8 @@
 <?php
 
 include("../utility/function.php");
+include("../utility/database.php");
 
-function postMethod()
-{
-    if ($_SERVER['REQUEST_METHOD'] != 'POST') return;
-
-    $username = filter_input(
-        INPUT_POST,
-        'username',
-        FILTER_SANITIZE_SPECIAL_CHARS,
-    );
-
-    $password = filter_input(
-        INPUT_POST,
-        'password',
-        FILTER_SANITIZE_SPECIAL_CHARS,
-    );
-
-    $confirm_password = filter_input(
-        INPUT_POST,
-        'password2',
-        FILTER_SANITIZE_SPECIAL_CHARS,
-    );
-
-
-
-    if (empty($username) or empty($password) or empty($confirm_password)) {
-        sendError("You haven't enter your username or password!");
-    }
-
-    if ($password != $confirm_password) {
-        sendError("your password doesn't match with the confirm one!");
-    }
-
-    $password = password_hash($password, PASSWORD_DEFAULT);
-
-    include("../utility/database.php");
-    $sql = "INSERT INTO account (username, password)
-            VALUES ('$username', '$password')";
-    $conn->query($sql);
-    $conn->close();
-
-    header("Location: login.php");
-}
 ?>
 
 <!DOCTYPE html>
@@ -103,3 +62,50 @@ function postMethod()
 </body>
 
 </html>
+
+<?php
+
+function postMethod()
+{
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') return;
+
+    $username = filter_input(
+        INPUT_POST,
+        'username',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+    $password = filter_input(
+        INPUT_POST,
+        'password',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+    $confirm_password = filter_input(
+        INPUT_POST,
+        'password2',
+        FILTER_SANITIZE_SPECIAL_CHARS,
+    );
+
+
+
+    if (empty($username) or empty($password) or empty($confirm_password)) {
+        sendError("You haven't enter your username or password!");
+    }
+
+    if ($password != $confirm_password) {
+        sendError("your password doesn't match with the confirm one!");
+    }
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    $conn = getConn();
+    $sql = "INSERT INTO account (username, password)
+            VALUES ('$username', '$password')";
+    $conn->query($sql);
+    $conn->close();
+
+    header("Location: login.php");
+}
+
+?>
