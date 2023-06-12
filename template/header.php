@@ -20,9 +20,9 @@
             <img src="../img/menu.ico" alt="" width=32 height=32>
         </button>
 
-        <div class="flex-box flex-center flex-grow">
+        <a class="flex-box flex-center flex-grow" href="../view/home.php">
             <img src="../favicon.ico" alt="" width=32 height=32>
-        </div>
+        </a>
     </section>
 </header>
 
@@ -34,4 +34,4 @@
     </a>
 </nav>
 
-<script src="../js/home.js"></script>
+<script src="../js/header.js"></script>

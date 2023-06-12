@@ -53,8 +53,7 @@
 
 function getGetMethod():void
 {
-    if ($_SERVER['REQUEST_METHOD'] != "GET" and
-        isset($_GET['submit'])) return;
+    if ($_SERVER['REQUEST_METHOD'] != "GET") return;
 
     foreach($_POST as $key => $value) {
         echo "{$key} = {$value} <br>";

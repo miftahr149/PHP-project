@@ -7,6 +7,7 @@
     <?php include("../template/header.php") ?>
 
     <main class="main flex-grow bg-black">
+        <?php header('create.php') ?>
         <div class="main__navbar">
             <a href="../view/create.php" class="create-ingredients flex-box flex-center">
                 <img src="../img/plus.ico" alt="profile" title="Profile">
@@ -39,14 +40,22 @@
         </div>
     </main>
 
-    <script src="../js/home.js"></script>
+    <script>
+        const userRecipesContainer = document.querySelectorAll(".user-recipe");
+        userRecipesContainer.forEach(userRecipe => {
+            /* Adjust the title */
+            if (userRecipe.value.length > 15) {
+                userRecipe.value = userRecipe.value.slice(0, 14) + "...";
+            }
+        })
+    </script>
 </body>
 
 </html>
 
 <?php
 
-function getUserRecipes():void
+function getUserRecipes(): void
 {
     $conn = getConn();
     $author = getUserData('username');
@@ -61,16 +70,6 @@ function getUserRecipes():void
     }
 
     $conn->close();
-}
-
-function gotoRecipe():void
-{
-    $recipeTitle = filter_input(INPUT_GET, 'recipe', FILTER_SANITIZE_SPECIAL_CHARS);
-    if ($_SERVER['REQUEST_METHOD'] != 'GET' and
-        empty($recipeTitle)) return;
-    
-    $_SESSION['recipe_title'] = $recipeTitle;
-    header("Location: recipe.php");
 }
 
 ?>

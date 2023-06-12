@@ -76,6 +76,7 @@ body {
     display: block;
     padding: 1rem 0;
     background-color: inherit;
+    font-size: 1.1rem;
     border: 0;
     text-decoration: none;
 }
