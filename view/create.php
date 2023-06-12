@@ -31,7 +31,7 @@
             </div>
 
             <div>
-                <input type="submit" value="Create" class="create-button button button--white-hover">
+                <input type="submit" value="Create" class="create-button button button--white-hover" name="create">
             </div>
         </form>
     </main>
@@ -49,21 +49,29 @@
 
 </html>
 
-<?php 
+<?php
 
-function getGetMethod():void
+function getGetMethod(): void
 {
-    if ($_SERVER['REQUEST_METHOD'] != "GET") return;
-
-    foreach($_POST as $key => $value) {
-        echo "{$key} = {$value} <br>";
-    }
+    if (empty($_GET['create'])) return;
 
     $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
     $desc = filter_input(INPUT_GET, 'desc', FILTER_SANITIZE_SPECIAL_CHARS);
-    $ingredients = filter_input(INPUT_GET, 'ingredients', FILTER_SANITIZE_SPECIAL_CHARS);
-    $instruction = filter_input(INPUT_GET, 'instruction', FILTER_SANITIZE_SPECIAL_CHARS);
-    
+
+    $ingredients = $_GET['ingredients'];
+    $instruction = $_GET['instruction'];
+
+    $ingredients = str_replace("\n", "<br>", $ingredients);
+    $ingredients = str_replace("\r", " ", $ingredients);
+    $ingredients = explode("<br>", $ingredients);
+    $ingredients = json_encode($ingredients);
+
+    $instruction = str_replace("\n", "<br>", $instruction);
+    $instruction = str_replace("\r", " ", $instruction);
+    $instruction = explode("<br>", $instruction);
+    $instruction = json_encode($instruction);
+
+    echo gettype($instruction);
 
     if (empty($title)) {
         sendError("You haven't enter your title!");
@@ -74,6 +82,7 @@ function getGetMethod():void
     $author = getUserData('username');
     $sql = "INSERT INTO recipes (author, title, description, ingredients, instruction)
             VALUES ('$author', '$title', '$desc', '$ingredients', '$instruction');";
+
     $conn->query($sql);
     $conn->close();
 

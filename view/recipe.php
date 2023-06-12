@@ -6,6 +6,8 @@ $title = $_GET['recipeTitle'];
 $sql = "SELECT * FROM recipes WHERE title = '$title'";
 $recipe = $conn->query($sql);
 $recipe = $recipe->fetch_assoc();
+$recipe['ingredients'] = json_decode($recipe['ingredients']);
+$recipe['instruction'] = json_decode($recipe['instruction']);
 
 ?>
 <style>
@@ -35,7 +37,23 @@ $recipe = $recipe->fetch_assoc();
     .content-box h2 {
         margin-bottom: 1rem;
     }
-    
+
+    .content {
+        padding: 0 1.5rem;
+        line-height: 1.5;
+    }
+
+    .content--no-padding {
+        padding: 0;
+    }
+
+    .content--paragraph {
+        text-align: justify;
+    }
+
+    .content li {
+        padding-bottom: 1rem;
+    }
 </style>
 <title>Document</title>
 </head>
@@ -53,17 +71,17 @@ $recipe = $recipe->fetch_assoc();
 
         <div class="content-box">
             <h2>Description</h2>
-            <p><?php echo nl2br($recipe['description']) ?></p>
+            <p class="content content--no-padding content--paragraph"><?php echo nl2br($recipe['description']) ?></p>
         </div>
 
         <div class="content-box">
             <h2>Ingredients</h2>
-            <p><?php echo nl2br($recipe['ingredients']) ?><p>
+            <ul class="content"><?php loadArray($recipe['ingredients']) ?><ul>
         </div>
 
         <div class="content-box">
             <h2>Instruction</h2>
-            <p><?php echo $recipe['instruction'] ?><p>
+            <ol class="content"><?php loadArray($recipe['instruction']) ?><ol>
         </div>
     </main>
 </body>
@@ -71,5 +89,13 @@ $recipe = $recipe->fetch_assoc();
 </html>
 
 <?php
+
+function loadArray(array $ingredients): void
+{
+
+    foreach ($ingredients as $ingredient) {
+        echo "<li>" . $ingredient . "</li>";
+    }
+}
 
 ?>
