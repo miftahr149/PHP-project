@@ -17,17 +17,44 @@
                 <label for="title">Title: </label>
                 <input type="text" name="title">
             </div>
+
             <div class="create__item">
                 <label for="desc">Description: </label>
                 <textarea rows=1 name="desc"></textarea>
             </div>
+
             <div class="create__item">
                 <label for="ingredients">Ingredients: </label>
-                <textarea rows=1 name="ingredients"></textarea>
+                <section class="wrapper-border flex-box">
+                    <ul class="list" id="ingredients">
+                        <li class="textarea-wrapper">
+                            <div class="wrapper-grid">
+                                <textarea name="ingredients[]" rows="1"></textarea>
+                                <img class="delete button" src="../img/trash.ico" height="32" width=32>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="create-list button" onclick="createList('ingredients')">
+                        Create List
+                    </div>
+                </section>
             </div>
+
             <div class="create__item">
                 <label for="instruction">Instruction: </label>
-                <textarea rows=1 name="instruction"></textarea>
+                <section class="wrapper-border flex-box">
+                    <ol class="list" id="instruction">
+                        <li class="textarea-wrapper">
+                            <div class="wrapper-grid">
+                                <textarea name="instruction[]" rows="1"></textarea>
+                                <img class="delete button" src="../img/trash.ico" height="32" width=32>
+                            </div>
+                        </li>
+                    </ol>
+                    <div class="create-list button" onclick="createList('instruction')">
+                        Create List
+                    </div>
+                </section>
             </div>
 
             <div>
@@ -37,13 +64,47 @@
     </main>
 
     <script>
-        const textAreaContainer = document.querySelectorAll("textarea")
-        textAreaContainer.forEach((textArea) => {
-            textArea.oninput = () => {
-                textArea.style.height = "";
-                textArea.style.height = textArea.scrollHeight + "px";
-            }
-        })
+        const configureFunction = () => {
+            document.querySelectorAll("textarea").forEach((textArea) => {
+                textArea.oninput = () => {
+                    textArea.style.height = "";
+                    textArea.style.height = textArea.scrollHeight + "px";
+                }
+            })
+
+            document.querySelectorAll(".delete").forEach(deleteButton => {
+                deleteButton.addEventListener("click", (event) => {
+                    deleteButton.parentElement.parentElement.remove();
+                })
+            })
+        }
+
+        const createList = (containerName) => {
+            let li = document.createElement("li");
+            li.classList.add("textarea-wrapper");
+
+            let div = document.createElement("div");
+            div.classList.add("wrapper-grid");
+
+            let textarea = document.createElement("textarea");
+            textarea.setAttribute("name", containerName + "[]");
+            textarea.setAttribute("rows", "1");
+
+            let deleteButton = document.createElement("img");
+            deleteButton.setAttribute("src", "../img/trash.ico");
+            deleteButton.setAttribute("width", "32");
+            deleteButton.setAttribute("height", "32");
+            deleteButton.classList.add("delete", "button");
+
+            div.appendChild(textarea);
+            div.appendChild(deleteButton);
+            li.appendChild(div);
+
+            document.getElementById(containerName).appendChild(li);
+            configureFunction();
+        }
+
+        configureFunction();
     </script>
 </body>
 
