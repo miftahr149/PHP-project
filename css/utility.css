@@ -61,6 +61,7 @@ p {
     background-color: transparent;
     border: 0;
     color: inherit;
+    border-radius: 5px;
 }
 
 .button:hover {

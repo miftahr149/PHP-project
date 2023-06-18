@@ -26,34 +26,36 @@
             <div class="create__item">
                 <label for="ingredients">Ingredients: </label>
                 <section class="wrapper-border flex-box">
-                    <ul class="list" id="ingredients">
-                        <li class="textarea-wrapper">
-                            <div class="wrapper-grid">
-                                <textarea name="ingredients[]" rows="1"></textarea>
-                                <img class="delete button" src="../img/trash.ico" height="32" width=32>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="create-list button" onclick="createList('ingredients')">
-                        Create List
-                    </div>
+                    <ul class="list" id="ingredients"></ul>
+                    <section class="button-container flex-box">
+                        <div class="create-list button" onclick="createList('ingredients')">
+                            Create List
+                        </div>
+                        <div class="copy button" onclick="copyConfigure('ingredients')">
+                            Copy
+                        </div>
+                        <div class="delete-all button" onclick="deleteAllFunction('ingredients')">
+                            Delete All
+                        </div>
+                    </section>
                 </section>
             </div>
 
             <div class="create__item">
                 <label for="instruction">Instruction: </label>
                 <section class="wrapper-border flex-box">
-                    <ol class="list" id="instruction">
-                        <li class="textarea-wrapper">
-                            <div class="wrapper-grid">
-                                <textarea name="instruction[]" rows="1"></textarea>
-                                <img class="delete button" src="../img/trash.ico" height="32" width=32>
-                            </div>
-                        </li>
-                    </ol>
-                    <div class="create-list button" onclick="createList('instruction')">
-                        Create List
-                    </div>
+                    <ol class="list" id="instruction"></ol>
+                    <section class="button-container flex-box">
+                        <div class="create-list button" onclick="createList('instruction')">
+                            Create List
+                        </div>
+                        <div class="copy button" onclick="copyConfigure('instruction')">
+                            Copy
+                        </div>
+                        <div class="delete-all button" onclick="deleteAllFunction('instruction')">
+                            Delete All
+                        </div>
+                    </section>
                 </section>
             </div>
 
@@ -61,11 +63,22 @@
                 <input type="submit" value="Create" class="create-button button button--white-hover" name="create">
             </div>
         </form>
+
+        <div class="copy-background none flex-box flex-center">
+            <section class="copy-window flex-box">
+                <h1 class="">Copy</h1>
+                <textarea id="copy" class="copy-value flex-grow"></textarea>
+                <button onclick="copyFunction()" class="copy-button button">Copy</button>
+            </section>
+        </div>
     </main>
 
     <script>
         const configureFunction = () => {
             document.querySelectorAll("textarea").forEach((textArea) => {
+                textArea.style.height = "";
+                textArea.style.height = textArea.scrollHeight + "px";
+
                 textArea.oninput = () => {
                     textArea.style.height = "";
                     textArea.style.height = textArea.scrollHeight + "px";
@@ -79,7 +92,7 @@
             })
         }
 
-        const createList = (containerName) => {
+        const createList = (containerName, value = "") => {
             let li = document.createElement("li");
             li.classList.add("textarea-wrapper");
 
@@ -89,6 +102,7 @@
             let textarea = document.createElement("textarea");
             textarea.setAttribute("name", containerName + "[]");
             textarea.setAttribute("rows", "1");
+            textarea.value = value;
 
             let deleteButton = document.createElement("img");
             deleteButton.setAttribute("src", "../img/trash.ico");
@@ -102,6 +116,28 @@
 
             document.getElementById(containerName).appendChild(li);
             configureFunction();
+        }
+
+        const copyConfigure = (containerName) => {
+            let copyBackground = document.querySelector(".copy-background");
+            copyBackground.classList.toggle("none");
+            copyBackground.setAttribute("container", containerName);
+            document.querySelector("#copy").value = "";
+        }
+
+        const copyFunction = () => {
+            let containerName = document.querySelector(".copy-background").getAttribute('container');
+            let value = document.querySelector('#copy').value.split("\n");
+            console.log(containerName);
+            value.forEach(string => createList(containerName, string));
+            copyConfigure();
+        }
+
+        const deleteAllFunction = (containerName) => {
+            let container = document.getElementById(containerName);
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
         }
 
         configureFunction();
@@ -119,20 +155,9 @@ function getGetMethod(): void
     $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
     $desc = filter_input(INPUT_GET, 'desc', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $ingredients = $_GET['ingredients'];
-    $instruction = $_GET['instruction'];
+    $ingredients = json_encode($_GET["ingredients"]);
+    $instruction = json_encode($_GET["instruction"]);
 
-    $ingredients = str_replace("\n", "<br>", $ingredients);
-    $ingredients = str_replace("\r", " ", $ingredients);
-    $ingredients = explode("<br>", $ingredients);
-    $ingredients = json_encode($ingredients);
-
-    $instruction = str_replace("\n", "<br>", $instruction);
-    $instruction = str_replace("\r", " ", $instruction);
-    $instruction = explode("<br>", $instruction);
-    $instruction = json_encode($instruction);
-
-    echo gettype($instruction);
 
     if (empty($title)) {
         sendError("You haven't enter your title!");
