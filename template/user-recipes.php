@@ -1,4 +1,4 @@
 <form action="../view/recipe.php" method="get">
-    <textarea name="recipeTitle" class="none"><?php echo $title ?></textarea>
+    <textarea name="recipeId" class="none"><?php echo $id ?></textarea>
     <input type="submit" value="<?php echo $title ?>" class=user-recipe name="recipe">
 </form>

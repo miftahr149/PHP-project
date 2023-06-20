@@ -1,10 +1,10 @@
 <?php
 include("../template/home-head.php");
 
-if (isset($_GET['recipeTitle'])) {
+if (isset($_GET['recipeId'])) {
     $conn = getConn();
-    $title = $_GET['recipeTitle'];
-    $sql = "SELECT * FROM recipes WHERE title = '$title'";
+    $id = $_GET['recipeId'];
+    $sql = "SELECT * FROM recipes WHERE id = '$id'";
     $recipe = $conn->query($sql);
     $recipe = $recipe->fetch_assoc();
     $recipe['ingredients'] = json_decode($recipe['ingredients']);
@@ -66,7 +66,7 @@ function isAuthor(string $author): void
     if ($_SESSION['user_data']['username'] == $author) {
         echo
         "
-        <textarea class='none' name='recipeTitle'>{$_GET['recipeTitle']}</textarea>
+        <textarea class='none' name='recipeId'>{$_GET['recipeId']}</textarea>
         <input type='submit' value='edit' name='submit' class='edit button button--white-border button--white-hover'>
         ";
     }

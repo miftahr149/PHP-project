@@ -66,6 +66,7 @@ function getUserRecipes(): void
 
     foreach ($results as $result) {
         $title = $result['title'];
+        $id = $result['id'];
         include("../template/user-recipes.php");
     }
 

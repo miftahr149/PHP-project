@@ -31,6 +31,7 @@ function createTable(mysqli $conn): void
 
     #creating ingridients table
     $sql = "CREATE TABLE recipes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
         author CHAR(25) NOT NULL,
         title VARCHAR(255) NOT NULL,
         description TEXT,
@@ -66,3 +67,12 @@ function getConn(): mysqli
     $conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);
     return $conn;
 }
+
+/* function addColumn(): void
+{
+    $conn = getConn();
+    $sql = "ALTER TABLE recipes
+            ADD id INT AUTO_INCREMENT PRIMARY KEY;";
+    $conn->query($sql);
+    $conn->close();
+} */

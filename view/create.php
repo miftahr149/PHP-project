@@ -16,12 +16,12 @@
 
             <div class="create__item">
                 <label for="title">Title: </label>
-                <textarea rows=1 name="title"><?php getRecipe('title') ?></textarea>
+                <textarea rows=1 name="title"><?php echo getRecipe('title') ?></textarea>
             </div>
 
             <div class="create__item">
                 <label for="desc">Description: </label>
-                <textarea rows=1 name="desc"><?php getRecipe('description') ?></textarea>
+                <textarea rows=1 name="desc"><?php echo getRecipe('description') ?></textarea>
             </div>
 
             <div class="create__item">
@@ -64,8 +64,9 @@
                 </section>
             </div>
 
-            <div>
+            <div class="flex-box button-container">
                 <input type="submit" value="<?php echo $state ?>" class="create-button button button--white-hover" name="<?php echo $state ?>">
+                <?php deleteButton($state) ?>
             </div>
         </form>
 
@@ -89,6 +90,7 @@ function formMethod(): void
 {
     if (isset($_GET['create'])) createRecipe();
     if (isset($_GET['edit'])) editRecipe();
+    if (isset($_GET['delete'])) deleteRecipe();
 }
 
 function getInput(): array | null
@@ -130,11 +132,26 @@ function editRecipe(): void
     if (empty($inputValue)) return;
     extract($inputValue);
 
+    $id = getRecipe('id');
     $conn = getConn();
     $sql = "UPDATE recipes SET author='$author', title='$title', description='$desc', 
-            ingredients='$ingredients', instruction='$instruction' WHERE title='$title'";
+            ingredients='$ingredients', instruction='$instruction' WHERE id='$id'";
     $conn->query($sql);
     $conn->close();
+
+    unset($_SESSION['edit_recipe']);
+    header("Location: home.php");
+}
+
+function deleteRecipe(): void
+{
+    $conn = getConn();
+    $id = getRecipe("id");
+    $sql = "DELETE FROM recipes WHERE id='$id'";
+    $conn->query($sql);
+    $conn->close();
+
+    unset($_SESSION['edit_recipe']);
     header("Location: home.php");
 }
 
@@ -144,19 +161,28 @@ function getState(): string
     return "create";
 }
 
-function getRecipe(string $key): void
+function getRecipe(string $key): mixed
 {
-    if (empty($_SESSION['edit_recipe'][$key])) return;
-    echo $_SESSION['edit_recipe'][$key];
+    if (empty($_SESSION['edit_recipe'][$key])) return null;
+    return $_SESSION['edit_recipe'][$key];
 }
 
 function getRecipeArray(string $key): void
 {
-    if (empty($_SESSION['edit_recipe'][$key])) return;
+    if (empty(getRecipe($key))) return;
     $container = $key;
-    foreach($_SESSION['edit_recipe'][$key] as $text) {
+    foreach(getRecipe($key) as $text) {
         include('../template/recipe-list.php');
     }
+}
+
+function deleteButton(string $state): void
+{
+    if ($state != 'edit') return;
+    echo 
+    "
+    <input type='submit' value='delete' name='delete' class='create-button delete-button button'>
+    ";
 }
 
 ?>
