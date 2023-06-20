@@ -1,6 +1,9 @@
 <?php include("../template/home-head.php") ?>
+<?php formMethod(); ?>
+<?php $state = getState() ?>
+
 <link rel="stylesheet" href="../css/create.css?v=<?php echo time() ?>">
-<title>Create</title>
+<title><?php echo ucfirst($state) ?></title>
 </head>
 
 <body>
@@ -11,22 +14,22 @@
         <h1 class="title">Create New Repository</h1>
         <form action="<?php $_SERVER['PHP_SELF'] ?>" class="create" method="get">
 
-            <?php getGetMethod(); ?>
-
             <div class="create__item">
                 <label for="title">Title: </label>
-                <input type="text" name="title">
+                <textarea rows=1 name="title"><?php getRecipe('title') ?></textarea>
             </div>
 
             <div class="create__item">
                 <label for="desc">Description: </label>
-                <textarea rows=1 name="desc"></textarea>
+                <textarea rows=1 name="desc"><?php getRecipe('description') ?></textarea>
             </div>
 
             <div class="create__item">
                 <label for="ingredients">Ingredients: </label>
                 <section class="wrapper-border flex-box">
-                    <ul class="list" id="ingredients"></ul>
+                    <ul class="list" id="ingredients">
+                        <?php getRecipeArray("ingredients") ?>
+                    </ul>
                     <section class="button-container flex-box">
                         <div class="create-list button" onclick="createList('ingredients')">
                             Create List
@@ -44,7 +47,9 @@
             <div class="create__item">
                 <label for="instruction">Instruction: </label>
                 <section class="wrapper-border flex-box">
-                    <ol class="list" id="instruction"></ol>
+                    <ol class="list" id="instruction">
+                        <?php getRecipeArray("instruction") ?>
+                    </ol>
                     <section class="button-container flex-box">
                         <div class="create-list button" onclick="createList('instruction')">
                             Create List
@@ -60,7 +65,7 @@
             </div>
 
             <div>
-                <input type="submit" value="Create" class="create-button button button--white-hover" name="create">
+                <input type="submit" value="<?php echo $state ?>" class="create-button button button--white-hover" name="<?php echo $state ?>">
             </div>
         </form>
 
@@ -73,99 +78,43 @@
         </div>
     </main>
 
-    <script>
-        const configureFunction = () => {
-            document.querySelectorAll("textarea").forEach((textArea) => {
-                textArea.style.height = "";
-                textArea.style.height = textArea.scrollHeight + "px";
-
-                textArea.oninput = () => {
-                    textArea.style.height = "";
-                    textArea.style.height = textArea.scrollHeight + "px";
-                }
-            })
-
-            document.querySelectorAll(".delete").forEach(deleteButton => {
-                deleteButton.addEventListener("click", (event) => {
-                    deleteButton.parentElement.parentElement.remove();
-                })
-            })
-        }
-
-        const createList = (containerName, value = "") => {
-            let li = document.createElement("li");
-            li.classList.add("textarea-wrapper");
-
-            let div = document.createElement("div");
-            div.classList.add("wrapper-grid");
-
-            let textarea = document.createElement("textarea");
-            textarea.setAttribute("name", containerName + "[]");
-            textarea.setAttribute("rows", "1");
-            textarea.value = value;
-
-            let deleteButton = document.createElement("img");
-            deleteButton.setAttribute("src", "../img/trash.ico");
-            deleteButton.setAttribute("width", "32");
-            deleteButton.setAttribute("height", "32");
-            deleteButton.classList.add("delete", "button");
-
-            div.appendChild(textarea);
-            div.appendChild(deleteButton);
-            li.appendChild(div);
-
-            document.getElementById(containerName).appendChild(li);
-            configureFunction();
-        }
-
-        const copyConfigure = (containerName) => {
-            let copyBackground = document.querySelector(".copy-background");
-            copyBackground.classList.toggle("none");
-            copyBackground.setAttribute("container", containerName);
-            document.querySelector("#copy").value = "";
-        }
-
-        const copyFunction = () => {
-            let containerName = document.querySelector(".copy-background").getAttribute('container');
-            let value = document.querySelector('#copy').value.split("\n");
-            console.log(containerName);
-            value.forEach(string => createList(containerName, string));
-            copyConfigure();
-        }
-
-        const deleteAllFunction = (containerName) => {
-            let container = document.getElementById(containerName);
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
-        }
-
-        configureFunction();
-    </script>
+    <script src="../js/create.js"></script>
 </body>
 
 </html>
 
 <?php
 
-function getGetMethod(): void
+function formMethod(): void
 {
-    if (empty($_GET['create'])) return;
+    if (isset($_GET['create'])) createRecipe();
+    if (isset($_GET['edit'])) editRecipe();
+}
 
-    $title = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
-    $desc = filter_input(INPUT_GET, 'desc', FILTER_SANITIZE_SPECIAL_CHARS);
+function getInput(): array | null
+{
+    $inputArray = array();
+    $inputArray['title'] = filter_input(INPUT_GET, 'title', FILTER_SANITIZE_SPECIAL_CHARS);
+    $inputArray['desc'] = filter_input(INPUT_GET, 'desc', FILTER_SANITIZE_SPECIAL_CHARS);
+    $inputArray['ingredients'] = json_encode($_GET["ingredients"]);
+    $inputArray['instruction'] = json_encode($_GET["instruction"]);
+    $inputArray['author'] = getUserData('username');
 
-    $ingredients = json_encode($_GET["ingredients"]);
-    $instruction = json_encode($_GET["instruction"]);
-
-
-    if (empty($title)) {
+    if (empty($inputArray['title'])) {
         sendError("You haven't enter your title!");
-        return;
+        return null;
     }
 
+    return $inputArray;
+}
+
+function createRecipe(): void
+{
+    $inputValue = getInput();
+    if (empty($inputValue)) return;
+    extract($inputValue);
+
     $conn = getConn();
-    $author = getUserData('username');
     $sql = "INSERT INTO recipes (author, title, description, ingredients, instruction)
             VALUES ('$author', '$title', '$desc', '$ingredients', '$instruction');";
 
@@ -173,6 +122,41 @@ function getGetMethod(): void
     $conn->close();
 
     header("Location: home.php");
+}
+
+function editRecipe(): void
+{
+    $inputValue = getInput();
+    if (empty($inputValue)) return;
+    extract($inputValue);
+
+    $conn = getConn();
+    $sql = "UPDATE recipes SET author='$author', title='$title', description='$desc', 
+            ingredients='$ingredients', instruction='$instruction' WHERE title='$title'";
+    $conn->query($sql);
+    $conn->close();
+    header("Location: home.php");
+}
+
+function getState(): string
+{
+    if (isset($_SESSION['edit_recipe'])) return "edit";
+    return "create";
+}
+
+function getRecipe(string $key): void
+{
+    if (empty($_SESSION['edit_recipe'][$key])) return;
+    echo $_SESSION['edit_recipe'][$key];
+}
+
+function getRecipeArray(string $key): void
+{
+    if (empty($_SESSION['edit_recipe'][$key])) return;
+    $container = $key;
+    foreach($_SESSION['edit_recipe'][$key] as $text) {
+        include('../template/recipe-list.php');
+    }
 }
 
 ?>

@@ -1,0 +1,58 @@
+body {
+    background-color: #0d1117;
+    color: var(--white);
+}
+
+.title {
+    border-bottom: 2px solid white;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.header-author__right,
+.header-author__left {
+    align-items: center;
+}
+
+.header-author__right {
+    justify-content: right;
+}
+
+.author {
+    margin-top: 0.5rem;
+    font-size: 1.5rem;
+    padding: .5rem;
+}
+
+.content-box {
+    border-radius: 10px;
+    border: 1px solid white;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.content-box h2 {
+    margin-bottom: 1rem;
+}
+
+.content {
+    padding: 0 1.5rem;
+    line-height: 1.5;
+}
+
+.content--no-padding {
+    padding: 0;
+}
+
+.content--paragraph {
+    text-align: justify;
+}
+
+.content li {
+    padding-bottom: 1rem;
+}
+
+.edit {
+    font-size: 1.5rem;
+    padding: .4rem .5rem;
+}

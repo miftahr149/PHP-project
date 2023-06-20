@@ -1,60 +1,20 @@
 <?php
 include("../template/home-head.php");
 
-$conn = getConn();
-$title = $_GET['recipeTitle'];
-$sql = "SELECT * FROM recipes WHERE title = '$title'";
-$recipe = $conn->query($sql);
-$recipe = $recipe->fetch_assoc();
-$recipe['ingredients'] = json_decode($recipe['ingredients']);
-$recipe['instruction'] = json_decode($recipe['instruction']);
+if (isset($_GET['recipeTitle'])) {
+    $conn = getConn();
+    $title = $_GET['recipeTitle'];
+    $sql = "SELECT * FROM recipes WHERE title = '$title'";
+    $recipe = $conn->query($sql);
+    $recipe = $recipe->fetch_assoc();
+    $recipe['ingredients'] = json_decode($recipe['ingredients']);
+    $recipe['instruction'] = json_decode($recipe['instruction']);
+}
+
+editMethod($recipe);
 
 ?>
-<style>
-    body {
-        background-color: #0d1117;
-        color: var(--white);
-    }
-
-    .title {
-        border-bottom: 2px solid white;
-        padding-bottom: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .author {
-        margin-top: 0.5rem;
-        font-size: 1.5rem;
-    }
-
-    .content-box {
-        border-radius: 10px;
-        border: 1px solid white;
-        margin-bottom: 1.5rem;
-        padding: 1rem;
-    }
-
-    .content-box h2 {
-        margin-bottom: 1rem;
-    }
-
-    .content {
-        padding: 0 1.5rem;
-        line-height: 1.5;
-    }
-
-    .content--no-padding {
-        padding: 0;
-    }
-
-    .content--paragraph {
-        text-align: justify;
-    }
-
-    .content li {
-        padding-bottom: 1rem;
-    }
-</style>
+<link rel="stylesheet" href="../css/recipe.css">
 <title>Document</title>
 </head>
 
@@ -64,7 +24,7 @@ $recipe['instruction'] = json_decode($recipe['instruction']);
     <main class=container>
         <div class="title">
             <h1><?php echo $recipe['title'] ?></h1>
-            <form>
+            <form class="header-author flex-box">
                 <input type="submit" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
             </form>
         </div>
@@ -83,6 +43,10 @@ $recipe['instruction'] = json_decode($recipe['instruction']);
             <h2>Instruction</h2>
             <ol class="content"><?php loadArray($recipe['instruction']) ?><ol>
         </div>
+
+        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
+            <?php isAuthor($recipe['author']) ?>
+        </form>
     </main>
 </body>
 
@@ -90,12 +54,31 @@ $recipe['instruction'] = json_decode($recipe['instruction']);
 
 <?php
 
-function loadArray(array $ingredients): void
+function loadArray(array $array): void
 {
-
-    foreach ($ingredients as $ingredient) {
-        echo "<li>" . $ingredient . "</li>";
+    foreach ($array as $element) {
+        echo "<li>" . $element . "</li>";
     }
+}
+
+function isAuthor(string $author): void
+{
+    if ($_SESSION['user_data']['username'] == $author) {
+        echo
+        "
+        <textarea class='none' name='recipeTitle'>{$_GET['recipeTitle']}</textarea>
+        <input type='submit' value='edit' name='submit' class='edit button button--white-border button--white-hover'>
+        ";
+    }
+}
+
+function editMethod(array $recipe): void
+{
+    if(empty($_GET["submit"])) return;
+    if ($_GET['submit'] != 'edit') return;
+    $_SESSION['edit_recipe'] = $recipe;
+    print_r($_SESSION['edit_recipe']);
+    header("Location: create.php");
 }
 
 ?>
