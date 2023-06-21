@@ -121,6 +121,9 @@ function createRecipe(): void
             VALUES ('$author', '$title', '$desc', '$ingredients', '$instruction');";
 
     $conn->query($sql);
+
+    $sql = "INSERT INTO recipes_stats () VALUES ()";
+    $conn->query($sql);
     $conn->close();
 
     header("Location: home.php");

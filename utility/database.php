@@ -16,9 +16,24 @@ function createDatabase(string $databaseName, mysqli $conn): void
     $conn->query($sql);
 }
 
-function createTable(mysqli $conn): void
+function createRecipesTable(mysqli $conn): void
 {
-    #creating account table
+    $sql = "CREATE TABLE recipes (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        author CHAR(25) NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        ingredients JSON,
+        instruction JSON,
+        created_at DATE DEFAULT CURRENT_TIMESTAMP
+    );";
+
+    if ($conn->query($sql) === true) echo "Success Creating Recipes Table";
+    else echo "Error Creating Recipes Table";
+}
+
+function createAccountTable(mysqli $conn): void
+{
     $sql = "CREATE TABLE account (
         id INT AUTO_INCREMENT PRIMARY KEY,
         username CHAR(25),
@@ -28,21 +43,26 @@ function createTable(mysqli $conn): void
 
     if ($conn->query($sql) === true) echo "Success Creating Account Table";
     else echo "Error Creating Account Table";
+}
 
-    #creating ingridients table
-    $sql = "CREATE TABLE recipes (
+function createRecipesStatsTable(mysqli $conn): void
+{
+    $sql = "CREATE TABLE recipes_stats (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        author CHAR(25) NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        description TEXT,
-        ingredients JSON,
-        instruction JSON,
-        views INT(10) DEFAULT 0,
-        created_at DATE DEFAULT CURRENT_TIMESTAMP
+        likeNumber INT DEFAULT 0,
+        likePeople JSON,
+        savedPeople JSON
     );";
 
-    if ($conn->query($sql) === true) echo "Success Creating Recipes Table";
-    else echo "Error Creating Recipes Table";
+    if ($conn->query($sql) === true) echo "Success Creating Account Table";
+    else echo "Error Creating Account Table";
+}
+
+function checkTable(mysqli $conn, string $table): bool
+{
+    $sql = "SHOW TABLES LIKE '$table'";
+    $result = $conn->query($sql);
+    return $result->num_rows > 0;
 }
 
 function getConn(): mysqli
@@ -59,20 +79,24 @@ function getConn(): mysqli
     }
 
     $databaseName = "mealmaster";
-    if (!isDatabaseExist($databaseName, $conn)) {
-        createDatabase($databaseName, $conn);
-        $conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);
-        createTable($conn);
-    }
+    if (!isDatabaseExist($databaseName, $conn)) createDatabase($databaseName, $conn);
     $conn = new mysqli($db_server, $db_user, $db_pass, $databaseName);
+
+    $tableArray = array(
+        'account' => function ($conn) {
+            createAccountTable($conn);
+        },
+        'recipes' => function ($conn) {
+            createRecipesTable($conn);
+        },
+        'recipes_stats' => function ($conn) {
+            createRecipesStatsTable($conn);
+        }
+    );
+
+    foreach ($tableArray as $table => $createFunction) {
+        if (!checkTable($conn, $table)) $createFunction($conn);
+    }
+
     return $conn;
 }
-
-/* function addColumn(): void
-{
-    $conn = getConn();
-    $sql = "ALTER TABLE recipes
-            ADD id INT AUTO_INCREMENT PRIMARY KEY;";
-    $conn->query($sql);
-    $conn->close();
-} */

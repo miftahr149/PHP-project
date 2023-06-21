@@ -16,6 +16,26 @@ body {
 
 .header-author__right {
     justify-content: right;
+    gap: 1rem;
+}
+
+.stats-button {
+    background-color: transparent;
+    background-size: cover;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    color: transparent;
+
+    transition: 500ms ease-in-out;
+}
+
+.heart-button {
+    background-image: url("../img/heart.ico");
+}
+
+.save-button {
+    background-image: url("../img/bookmark.ico")
 }
 
 .author {

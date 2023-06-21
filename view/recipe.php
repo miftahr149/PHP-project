@@ -1,20 +1,11 @@
 <?php
 include("../template/home-head.php");
 
-if (isset($_GET['recipeId'])) {
-    $conn = getConn();
-    $id = $_GET['recipeId'];
-    $sql = "SELECT * FROM recipes WHERE id = '$id'";
-    $recipe = $conn->query($sql);
-    $recipe = $recipe->fetch_assoc();
-    $recipe['ingredients'] = json_decode($recipe['ingredients']);
-    $recipe['instruction'] = json_decode($recipe['instruction']);
-}
-
-editMethod($recipe);
+$recipe = getRecipeData();
+getFormMethod();
 
 ?>
-<link rel="stylesheet" href="../css/recipe.css">
+<link rel="stylesheet" href="../css/recipe.css?v=<?php echo time(); ?>">
 <title>Document</title>
 </head>
 
@@ -24,8 +15,15 @@ editMethod($recipe);
     <main class=container>
         <div class="title">
             <h1><?php echo $recipe['title'] ?></h1>
-            <form class="header-author flex-box">
-                <input type="submit" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
+            <form class="header-author flex-box flex-grow" method="get">
+                <?php formRecipeId() ?>
+                <div class="header-author__left">
+                    <input type="submit" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
+                </div>
+                <div class="header-author__right flex-box flex-grow">
+                    <input type="submit" name="like" value="<?php echo isUser('likePeople') ?>" class="stats-button heart-button button">
+                    <input type="submit" name="save" value="<?php echo isUser('savedPeople') ?>" class="stats-button button save-button">
+                </div>
             </form>
         </div>
 
@@ -48,11 +46,20 @@ editMethod($recipe);
             <?php isAuthor($recipe['author']) ?>
         </form>
     </main>
+
+    <script src="../js/recipe.js"></script>
 </body>
 
 </html>
 
 <?php
+
+function getFormMethod(): void
+{
+    if (isset($_GET['edit'])) editMethod();
+    if (isset($_GET['like'])) statsMethod('likePeople');
+    if (isset($_GET['save'])) statsMethod('savedPeople');
+}
 
 function loadArray(array $array): void
 {
@@ -61,24 +68,146 @@ function loadArray(array $array): void
     }
 }
 
+function formRecipeId(): void
+{
+    echo "<textarea class='none' name='recipeId'>{$_GET['recipeId']}</textarea>";
+}
+
 function isAuthor(string $author): void
 {
     if ($_SESSION['user_data']['username'] == $author) {
+        formRecipeId();
         echo
         "
-        <textarea class='none' name='recipeId'>{$_GET['recipeId']}</textarea>
-        <input type='submit' value='edit' name='submit' class='edit button button--white-border button--white-hover'>
+        <input type='submit' value='Edit' name='edit' class='edit button button--white-border button--white-hover'>
         ";
     }
 }
 
-function editMethod(array $recipe): void
+function getRecipeData(): null | array
 {
-    if(empty($_GET["submit"])) return;
-    if ($_GET['submit'] != 'edit') return;
-    $_SESSION['edit_recipe'] = $recipe;
-    print_r($_SESSION['edit_recipe']);
+    if (empty($_GET['recipeId'])) return null;
+    $conn = getConn();
+
+    $id = $_GET['recipeId'];
+    $sql = "SELECT * FROM recipes WHERE id = '$id'";
+    $recipe = $conn->query($sql);
+    $recipe = $recipe->fetch_assoc();
+    $recipe['ingredients'] = json_decode($recipe['ingredients']);
+    $recipe['instruction'] = json_decode($recipe['instruction']);
+
+    $conn->close();
+    return $recipe;
+}
+
+function getRecipeStats(): array
+{
+    $conn = getConn();
+    $id = $_GET['recipeId'];
+    $sql = "SELECT * FROM recipes_stats WHERE id='$id'";
+    $result = $conn->query($sql);
+    $result = $result->fetch_assoc();
+
+    $result['likePeople'] = json_decode($result['likePeople']);
+    $result['savedPeople'] = json_decode($result['savedPeople']);
+    $conn->close();
+    return $result;
+}
+
+function isUser(string $key): string
+{
+    $recipeStats = getRecipeStats();
+    if (empty($recipeStats[$key]) or !in_array(getUserData('username'), $recipeStats[$key])) {
+        return "false";
+    }
+    return "true";
+}
+
+function editMethod(): void
+{
+    $_SESSION['edit_recipe'] = getRecipeData();
     header("Location: create.php");
 }
+
+function statsMethod(string $key): void
+{
+
+    $create = function($key, $recipeStats) {
+        $conn = getConn();
+        $sqlArray = array(
+            "likePeople" => function ($recipeStats) {
+                $likeCount = $recipeStats['likeNumber'] + 1;
+
+                if (isset($recipeStats['likePeople'])) {
+                    array_push($recipeStats['likePeople'], getUserData('username'));
+                } else {
+                    $recipeStats['likePeople'] = array(getUserData('username'));
+                }
+
+                $likePeople = json_encode($recipeStats['likePeople']);
+                $id = $recipeStats['id'];
+
+                return "UPDATE recipes_stats 
+                        SET likeNumber = '$likeCount', likePeople = '$likePeople'
+                        WHERE id = '$id'";
+            },
+
+            "savedPeople" => function ($recipeStats) {
+                if (isset($recipeStats['savedPeople'])) {
+                    array_push($recipeStats['savedPeople'], getUserData('username'));
+                } else {
+                    $recipeStats['savedPeople'] = array(getUserData('username'));
+                }
+
+                $savedPeople = json_encode($recipeStats['savedPeople']);
+                $id = $recipeStats['id'];
+                return "UPDATE recipes_stats
+                        SET savedPeople = '$savedPeople'
+                        WHERE id = '$id'";
+            }
+        );
+
+        $conn->query($sqlArray[$key]($recipeStats));
+        $conn->close();
+    };
+
+    $delete = function($key, $recipeStats) {
+        $conn = getConn();
+
+        $sqlArray = array(
+            "likePeople" => function($recipeStats) {
+                $likeCount = $recipeStats['likeNumber'] - 1;
+                $index = array_search(getUserData('username'), $recipeStats['likePeople']);
+                unset($recipeStats['likePeople'][$index]);
+
+                $likePeople = json_encode($recipeStats['likePeople']);
+                $id = $recipeStats['id'];
+
+                return "UPDATE recipes_stats 
+                        SET likeNumber = '$likeCount', likePeople = '$likePeople'
+                        WHERE id = '$id'";
+            },
+
+            "savedPeople" => function ($recipeStats) {
+                $index = array_search(getUserData('username'), $recipeStats['savedPeople']);
+                unset($recipeStats['savedPeople'][$index]);
+
+                $savedPeople = json_encode($recipeStats['savedPeople']);
+                $id = $recipeStats['id'];
+                return "UPDATE recipes_stats
+                        SET savedPeople = '$savedPeople'
+                        WHERE id = '$id'";
+            }
+        );
+
+        $conn->query($sqlArray[$key]($recipeStats));
+        $conn->close();
+    };
+
+    if (isUser($key) === 'false') $create($key, getRecipeStats());
+    else $delete($key, getRecipeStats());
+}
+
+
 
 ?>
