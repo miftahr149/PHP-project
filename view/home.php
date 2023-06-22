@@ -36,6 +36,7 @@
 
             <div class="trending main-box--wrapper">
                 <h3>Trending Ingredients</h3>
+                <?php getMostTrendingRecipes() ?>
             </div>
         </div>
     </main>
@@ -71,6 +72,21 @@ function getUserRecipes(): void
     }
 
     $conn->close();
+}
+
+function getMostTrendingRecipes(): void
+{
+    $conn = getConn();
+    $sql = "SELECT * FROM recipes_stats ORDER BY likeNumber DESC LIMIT 3";
+    $results = $conn->query($sql);
+
+    foreach ($results as $result) {
+        extract($result);
+        $sql = "SELECT * FROM recipes WHERE id = '$id'";
+        $recipeData = $conn->query($sql)->fetch_assoc();
+        extract($recipeData);
+        include("../template/recipe-card.php");
+    }
 }
 
 ?>
