@@ -6,7 +6,7 @@ getFormMethod();
 
 ?>
 <link rel="stylesheet" href="../css/recipe.css?v=<?php echo time(); ?>">
-<title>Document</title>
+<title><?php echo $title ?></title>
 </head>
 
 <body class="main-box">

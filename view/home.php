@@ -35,7 +35,7 @@
             </div>
 
             <div class="trending main-box--wrapper">
-                <h3>Trending Ingredients</h3>
+                <h3>Trending Recipes</h3>
                 <?php getMostTrendingRecipes() ?>
             </div>
         </div>

@@ -6,13 +6,13 @@
             <img src="../favicon.ico" alt="meal master icon" width=32 height=32>
         </a>
         <a href="" class="header__menu flex-box flex-center">Explore</a>
-        <a href="" class="header__menu flex-box flex-center">Favorite</a>
+        <a href="" class="header__menu flex-box flex-center">Saved</a>
     </section>
 
     <section class="header__right">
-        <a href="" class="header__menu flex-box flex-center">
-            <?php echo getUserData('username') ?>
-        </a>
+        <form action="../view/profile.php" method="get" class="flex-box flex-center">
+            <input type="submit" name="username" value="<?php echo getUserData('username') ?>" class="header__menu button flex-box flex-center flex-center">
+        </form>
     </section>
 
     <section class="header-tiny flex-box flex-grow">
@@ -28,10 +28,10 @@
 
 <nav class="menu bg-black none" id="menu">
     <a href="" class="menu__item button button--white-hover">Explore</a>
-    <a href="" class="menu__item button button--white-hover">Favorite</a>
-    <a href="" class="menu__item button button--white-hover">
-        <?php echo getUserData('username') ?>
-    </a>
+    <a href="" class="menu__item button button--white-hover">Saved</a>
+    <form action="../view/profile.php" method="get">
+        <input type="submit" value="<?php echo getUserData('username') ?>" class="menu__item button button--white-hover">
+    </form>
 </nav>
 
 <script src="../js/header.js"></script>
