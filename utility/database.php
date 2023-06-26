@@ -38,7 +38,13 @@ function createAccountTable(mysqli $conn): void
         id INT AUTO_INCREMENT PRIMARY KEY,
         username CHAR(25),
         password VARCHAR(255),
-        reg_date DATE DEFAULT CURRENT_TIMESTAMP
+        reg_date DATE DEFAULT CURRENT_TIMESTAMP,
+        first_name VARCHAR(255),
+        last_name VARCHAR(255),
+        image_background VARCHAR(255),
+        bio TEXT,
+        city VARCHAR(30),
+        country VARCHAR(30)
     );";
 
     if ($conn->query($sql) === true) echo "Success Creating Account Table";
