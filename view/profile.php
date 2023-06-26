@@ -41,7 +41,7 @@ $profileData = getProfileData();
     /* Edit Window */
 
     .edit-window-wrapper {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
 
@@ -65,12 +65,7 @@ $profileData = getProfileData();
     }
 
     .edit__header {
-        position: fixed;
-        background: white;
-
-        border-top-left-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, .5);
-
         padding: 2vh 2vw;
     }
 
@@ -92,9 +87,11 @@ $profileData = getProfileData();
     }
 
     .edit {
-        overflow-y: scroll;
-        flex-direction: column;
-        gap: 1rem;
+        overflow-y: auto;
+    }
+
+    .edit--margin-top {
+        margin-top: 1rem;
     }
 
     .edit__input {
@@ -105,6 +102,14 @@ $profileData = getProfileData();
     textarea.edit__input {
         max-width: 100%;
         min-width: 100%;
+
+        padding: .5rem 1rem;
+    }
+
+    .edit__button {
+        background-color: green;
+        padding: .2rem .3rem;
+        color: white;
     }
 </style>
 
@@ -123,14 +128,12 @@ $profileData = getProfileData();
             </div>
         </div>
 
-        <div class="edit-window-wrapper flex-box flex-center">
+        <div class="edit-window-wrapper flex-box flex-center none">
             <div class="edit-window flex-box">
-                <div class="edit__header-wrapper">
-                    <div class="edit__header">
-                        <button class="back-button button" onclick="editFunction()"></button>
-                    </div>
+                <div class="edit__header">
+                    <button class="back-button" onclick="editFunction()"></button>
                 </div>
-                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" class="edit flex-box flex-grow edit-window--padding">
+                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" class="edit flex-grow edit-window--padding">
                     <div class="flex-box" style="gap: 1.5rem">
                         <div class="flex-grow">
                             <label for="firstName" class="block">First Name</label>
@@ -142,12 +145,12 @@ $profileData = getProfileData();
                         </div>
                     </div>
 
-                    <div>
+                    <div class="edit--margin-top" style="margin-top: 1rem">
                         <label for="backgroundImage">Background Image </label>
                         <input type="file" name="backgroundImage" class="edit__input">
                     </div>
 
-                    <div class="flex-box" style="gap: 1.5rem">
+                    <div class="flex-box edit--margin-top" style="gap: 1.5rem;">
                         <div class="flex-grow">
                             <label for="city" class="block">City</label>
                             <input type="text" name="city" class="edit__input">
@@ -158,26 +161,21 @@ $profileData = getProfileData();
                         </div>
                     </div>
 
-                    <div>
+                    <div class="edit--margin-top">
                         <label for="bio" class="block">Bio</label>
                         <textarea name="bio" rows="2" class="edit__input"></textarea>
+                    </div>
+
+                    <div class="edit--margin-top">
+                        <input type="submit" value="Edit" class="edit__button button">
                     </div>
                 </form>
             </div>
         </div>
     </main>
-
     <script>
-        const editWindow = document.querySelector('.edit-window')
-        editWindow.resize = () => {
-            console.log("hello world");
-        }
-
-        const editHeaderWrapper = document.querySelector(".edit__header-wrapper");
-        const editHeader = document.querySelector('.edit__header');
-        editHeader.style.width = editWindow.clientWidth + "px";
-        console.log(editHeader.offsetHeight);
-        editHeaderWrapper.style.height = editHeader.offsetHeight + "px";
+        const editWindowWrapper = document.querySelector('.edit-window-wrapper');
+        const editFunction = () => editWindowWrapper.classList.toggle("none");
     </script>
 </body>
 
