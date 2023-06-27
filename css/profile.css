@@ -19,8 +19,8 @@ body {
 
 /* user-profile */
 .user-profile {
-    background: rgb(5, 5, 6);
-    background: linear-gradient(90deg, rgba(5, 5, 6, 1) 0%, rgba(39, 39, 50, 1) 49%, rgba(79, 79, 79, 1) 87%);
+    background-size: contain;
+
 }
 
 .username {
@@ -58,7 +58,7 @@ body {
 }
 
 .edit-window--padding {
-    padding: 2vw 5vh;
+    padding: 2vh 3vw;
 }
 
 .edit__header {
@@ -85,7 +85,6 @@ body {
 
 .edit {
     overflow-y: auto;
-    padding: 0.5rem 3vw;
 }
 
 .edit--margin-top {
