@@ -64,14 +64,11 @@ p {
     border-radius: 5px;
     font-size: inherit;
     font-weight: inherit;
+    transition: all 500ms ease-in;
 }
 
 .button:hover {
     cursor: pointer;
-}
-
-.button--white-hover {
-    transition: all 500ms ease-in;
 }
 
 .button--white-hover:hover {

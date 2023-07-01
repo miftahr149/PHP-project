@@ -36,12 +36,13 @@ function createAccountTable(mysqli $conn): void
 {
     $sql = "CREATE TABLE account (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        username CHAR(25),
+        username CHAR(25) UNIQUE,
         password VARCHAR(255),
         reg_date DATE DEFAULT CURRENT_TIMESTAMP,
         first_name VARCHAR(255),
         last_name VARCHAR(255),
         image_background VARCHAR(255),
+        image_background_top VARCHAR(255) DEFAULT 0,
         bio TEXT,
         city VARCHAR(30),
         country VARCHAR(30)

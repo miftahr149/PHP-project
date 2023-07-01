@@ -1,6 +1,6 @@
 <?php
 include("../template/home-head.php");
-editMethod();
+formMethod();
 $profileData = getProfileData();
 ?>
 <link rel="stylesheet" href="../css/profile.css?v=<?php echo time(); ?>">
@@ -11,68 +11,89 @@ $profileData = getProfileData();
     <?php include("../template/header.php") ?>
 
     <main class="main flex-box flex-grow">
-        <div class="user-profile flex-box box--padding" style="<?php getBackground($profileData['image_background']); ?>">
-            <div class="user-profile__left flex-grow">
-                <p class="username"><?php echo $profileData['username'] ?></p>
-            </div>
-            <div class="user-profile__right flex-box flex-grow">
-                <?php editProfile($profileData) ?>
-            </div>
-        </div>
-
-        <div class="edit-window-wrapper flex-box flex-center none">
-            <div class="edit-window flex-box">
-                <div class="edit__header edit-window--padding">
-                    <button class="back-button" onclick="editFunction()"></button>
+        <div class="background__container">
+            <div class="background flex-box" style="<?php getBackground($profileData) ?>">
+                <div class="background__filler background__filler--left flex-box flex-grow box--padding">
+                    <p><?php echo $profileData['first_name'] . " " . $profileData['last_name'] ?></p>
+                    <p class="username"><?php echo $profileData['username'] ?></p>
                 </div>
-                <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data" class="edit edit-window--padding flex-grow">
-                    <div class="flex-box" style="gap: 1.5rem">
-                        <div class="flex-grow">
-                            <label for="firstName" class="block">First Name</label>
-                            <input type="text" name="firstName" class="edit__input" value="<?php $profileData['first_name'] ?>">
-                        </div>
-                        <div class="flex-grow">
-                            <label for="lastName" class="block">Last Name</label>
-                            <input type="text" name="lastName" class="edit__input" value="<?php $profileData['last_name']?>">
-                        </div>
-                    </div>
-
-                    <div class="edit--margin-top" style="margin-top: 1rem">
-                        <label for="imageBackground">Background Image </label>
-                        <input type="file" name="imageBackground" class="edit__input" value="<?php $profileData['image_background'] ?>">
-                    </div>
-
-                    <div class="flex-box edit--margin-top" style="gap: 1.5rem;">
-                        <div class="flex-grow">
-                            <label for="city" class="block">City</label>
-                            <input type="text" name="city" class="edit__input" value="<?php $profileData['city'] ?>">
-                        </div>
-                        <div class="flex-grow">
-                            <label for="country" class="block">Country</label>
-                            <input type="text" name="country" class="edit__input" value="<?php $profileData['country'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="edit--margin-top">
-                        <label for="bio" class="block">Bio</label>
-                        <textarea name="bio" rows="2" class="edit__input">
-                            <?php $profileData['bio'] ?>
-                        </textarea>
-                    </div>
-
-                    <div class="button__wrapper edit--margin-top">
-                        <input type="submit" value="Edit" class="edit__button button" name="edit">
-                    </div>
-                </form>
+                <div class="background__filler background__filler--right flex-box flex-grow box--padding">
+                    <?php editProfile($profileData) ?>
+                </div>
             </div>
         </div>
-
     </main>
 
-    <script>
-        const editWindowWrapper = document.querySelector('.edit-window-wrapper');
-        const editFunction = () => editWindowWrapper.classList.toggle("none");
-    </script>
+    <div class="black-screen flex-box flex-center none" id="edit">
+        <div class="black-screen--window black-screen--window-height flex-box">
+            <div class="edit__header edit-window--padding">
+                <button class="back-button" onclick="showFunction('#edit')"></button>
+            </div>
+            <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data" class="edit edit-window--padding flex-grow">
+                <div class="flex-box" style="gap: 1.5rem">
+                    <div class="flex-grow">
+                        <label for="firstName" class="block">First Name</label>
+                        <input type="text" name="firstName" class="edit__input" value="<?php echo $profileData['first_name'] ?>">
+                    </div>
+                    <div class="flex-grow">
+                        <label for="lastName" class="block">Last Name</label>
+                        <input type="text" name="lastName" class="edit__input" value="<?php echo $profileData['last_name'] ?>">
+                    </div>
+                </div>
+
+                <div class="edit--margin-top" style="margin-top: 1rem">
+                    <label for="imageBackground">Background Image </label>
+                    <input type="file" name="imageBackground" class="edit__input" value="<?php echo $profileData['image_background'] ?>">
+                </div>
+
+                <div class="flex-box edit--margin-top" style="gap: 1.5rem;">
+                    <div class="flex-grow">
+                        <label for="city" class="block">City</label>
+                        <input type="text" name="city" class="edit__input" value="<?php echo $profileData['city'] ?>">
+                    </div>
+                    <div class="flex-grow">
+                        <label for="country" class="block">Country</label>
+                        <input type="text" name="country" class="edit__input" value="<?php echo $profileData['country'] ?>">
+                    </div>
+                </div>
+
+                <div class="edit--margin-top">
+                    <label for="bio" class="block">Bio</label>
+                    <textarea name="bio" rows="2" class="edit__input">
+                            <?php echo $profileData['bio'] ?>
+                    </textarea>
+                </div>
+
+                <div class="button__wrapper edit--margin-top">
+                    <input type="submit" name="editProfile" value="Edit" class="edit__button button">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="black-screen flex-box flex-center none" style="<?php isBackgroundChange(); ?>" id="editBackground">
+        <div class="black-screen--window flex-box edit-window--padding">
+            <button class="back-button" onclick="showFunction('#editBackground')"></button>
+            <h2 class="black-screen--header">Position your background image</h2>
+            <div class="background__container">
+                <div class="background" style="<?php getBackground($profileData) ?>" id="backgroundEdit">
+                    <div class="background__filler flex-box" style="padding: 2vh 5vw">
+                        <p><?php echo $profileData['first_name'] . " " . $profileData['last_name'] ?></p>
+                        <p class="username"><?php echo $profileData['username'] ?></p>
+                    </div>
+                </div>
+            </div>
+
+            <form action="" method="get">
+                <input type="text" id="topBackground" name="topBackground" class=none value="0">
+                <input type="text" name="username" value=<?php echo $profileData['username'] ?> class="none">
+                <input type="submit" name="editBackground" value="Confirm" class="button edit-background-button">
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/profile.js"></script>
+
 </body>
 
 
@@ -92,11 +113,17 @@ function getProfileData(): array
     return $profileData;
 }
 
-function getBackground(string $background): void
+function formMethod(): void
+{
+    if (isset($_POST['editProfile'])) editProfileFunction();
+    if (isset($_GET['editBackground'])) editBackgroundFunction();
+}
+
+function getBackground(array $profileData): void
 {
     $text = "background-size: cover;
              background-position: center;";
-    if (empty($background)) {
+    if (empty($profileData['image_background'])) {
         echo
         "
         background: linear-gradient(90deg, rgba(5, 5, 6, 1) 0%, rgba(39, 39, 50, 1) 49%, rgba(79, 79, 79, 1) 87%);
@@ -104,10 +131,14 @@ function getBackground(string $background): void
         return;
     };
 
-    echo $text .
+    $background = $profileData['image_background'];
+    $topBackground = $profileData['image_background_top'];
+
+    echo
     "
     background: url('$background');
-    ". $text;
+    top: $topBackground;
+    " . $text;
 }
 
 function editProfile(array $profileData): void
@@ -115,19 +146,20 @@ function editProfile(array $profileData): void
     if ($profileData['username'] !== getUserData('username')) return;
     echo
     '
-    <button class="edit-button button button--white-border button--white-hover" onclick="editFunction()">Edit</button>
+    <button class="edit-button button button--white-border button--white-hover" onclick=showFunction("#edit")>Edit</button>
     ';
 }
 
-function editMethod(): void
+function editProfileFunction(): void
 {
-    if ($_SERVER["REQUEST_METHOD"] != "POST") return;
-    if (empty($_FILES['imageBackground']) or 
-        $_FILES['imageBackground']['error'] !== UPLOAD_ERR_OK) return;
-    
-    $file = $_FILES['imageBackground'];
-    $destination = "../uploads/" . getUserData("username") . '.jpg';
-    move_uploaded_file($file['tmp_name'], $destination);
+    $destination = null;
+    if (
+        isset($_FILES['imageBackground']) and
+        $_FILES['imageBackground']['error'] === UPLOAD_ERR_OK
+    ) {
+        $destination = storeImageBackground();
+    }
+
     $id = getUserData('id');
 
     extract($_POST);
@@ -136,10 +168,34 @@ function editMethod(): void
             first_name = '$firstName',
             last_name = '$lastName',
             bio = '$bio',
-            image_background = '$destination',
-            city = '$city',
-            country = '$country'
-            WHERE id = '$id'";
+            city = '$city'," .
+        $destination .
+        "country = '$country'" .
+        "WHERE id = '$id'";
+    $conn->query($sql);
+    $conn->close();
+}
+
+function storeImageBackground(): string
+{
+    $file = $_FILES['imageBackground'];
+    $destination = "../uploads/" . getUserData("username") . '.jpg';
+    move_uploaded_file($file['tmp_name'], $destination);
+    return "image_background = '$destination',";
+}
+
+function isBackgroundChange(): void
+{
+    if (empty($_FILES['imageBackground'])) return;
+    if ($_FILES['imageBackground']['error'] !== UPLOAD_ERR_OK) return;
+    echo "display: flex";
+}
+
+function editBackgroundFunction(): void
+{
+    extract($_GET);
+    $conn = getConn();
+    $sql = "UPDATE account SET image_background_top = '$topBackground' WHERE username = '$username'";
     $conn->query($sql);
     $conn->close();
 }
