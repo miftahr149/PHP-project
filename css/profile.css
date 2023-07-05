@@ -23,13 +23,56 @@ body {
     font-size: 2rem;
 }
 
-.user-profile__right {
+.edit-button {
+    padding: .3rem .5rem;
+    background-color: black;
+}
+
+.edit-button:hover {
+    background-color: hsl(0, 0%, 0%, 70%)
+}
+
+.edit-button__wrapper {
     justify-content: right;
 }
 
-.edit-button {
-    padding: .3rem .5rem;
+/* Background Image */
+.background__container,
+.background__filler {
+    height: 35vh;
 }
+
+.background__container {
+    color: var(--white);
+    overflow: hidden;
+
+    position: relative;
+}
+
+.background {
+    height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.background__filler {
+    position: sticky;
+    top: 0;
+    justify-content: center;
+
+    flex-direction: column;
+}
+
+.background__filler p {
+    background-color: black;
+    margin-bottom: .2rem;
+    padding: .2rem 2vw;
+    width: fit-content;
+}
+
 
 /* Edit Window */
 
@@ -130,44 +173,8 @@ textarea.edit__input {
 }
 
 /* Edit Background */
-.background__container,
-.background__filler {
-    height: 35vh;
-}
-
-.background__container {
-    color: var(--white);
-    overflow: hidden;
-
-    position: relative;
-}
-
-.background {
-    height: 100vh;
-    position: relative;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-position: center;
-}
-
 #backgroundEdit {
     cursor: move;
-}
-
-.background__filler {
-    position: sticky;
-    top: 0;
-    align-items: center;
-}
-
-.background__filler--left {
-    left: 0;
-}
-
-.background__filler--right {
-    right: 0;
-    justify-content: right;
 }
 
 .edit-background-button {

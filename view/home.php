@@ -1,5 +1,10 @@
-<?php include("../template/home-head.php") ?>
+<?php
+
+use function PHPSTORM_META\type;
+
+ include("../template/home-head.php") ?>
 <link rel="stylesheet" href="../css/home.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../css/recipe-card.css?v=<?php echo time(); ?>">
 <title>MealMaster</title>
 </head>
 

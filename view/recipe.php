@@ -1,30 +1,29 @@
-<?php
-include("../template/home-head.php");
-
+<?php 
+include("../template/home-head.php"); 
 $recipe = getRecipeData();
 getFormMethod();
-
 ?>
+
 <link rel="stylesheet" href="../css/recipe.css?v=<?php echo time(); ?>">
-<title><?php echo $title ?></title>
+<title><?php echo $recipe['title'] ?></title>
 </head>
 
-<body class="main-box">
+<body>
     <?php include("../template/header.php") ?>
 
     <main class=container>
         <div class="title">
             <h1><?php echo $recipe['title'] ?></h1>
-            <form class="header-author flex-box flex-grow" method="get">
+            <div class="header-author flex-box flex-grow" method="get">
                 <?php formRecipeId() ?>
-                <div class="header-author__left">
-                    <input type="submit" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
-                </div>
-                <div class="header-author__right flex-box flex-grow">
+                <form class="header-author__left" action="profile.php">
+                    <input type="submit" name="username" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
+                </form>
+                <form class="header-author__right flex-box flex-grow">
                     <input type="submit" name="like" value="<?php echo isUser('likePeople') ?>" class="stats-button heart-button button">
                     <input type="submit" name="save" value="<?php echo isUser('savedPeople') ?>" class="stats-button button save-button">
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
         <div class="content-box">
@@ -42,8 +41,8 @@ getFormMethod();
             <ol class="content"><?php loadArray($recipe['instruction']) ?><ol>
         </div>
 
-        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
-            <?php isAuthor($recipe['author']) ?>
+        <form action="create.php" method="post">
+            <?php isAuthor($recipe) ?>
         </form>
     </main>
 
@@ -70,16 +69,17 @@ function loadArray(array $array): void
 
 function formRecipeId(): void
 {
-    echo "<textarea class='none' name='recipeId'>{$_GET['recipeId']}</textarea>";
+    $recipeId = $_GET['recipeId'];
+    echo "<input class='none' name='recipeId' value=$recipeId>";
 }
 
-function isAuthor(string $author): void
+function isAuthor(array $recipe): void
 {
-    if ($_SESSION['user_data']['username'] == $author) {
+    if ($_SESSION['user_data']['username'] == $recipe['author']) {
         formRecipeId();
         echo
         "
-        <input type='submit' value='Edit' name='edit' class='edit button button--white-border button--white-hover'>
+        <input type='submit' value='Edit' name='editRecipe' class='edit button button--white-border button--white-hover'>
         ";
     }
 }
@@ -132,7 +132,7 @@ function editMethod(): void
 function statsMethod(string $key): void
 {
 
-    $create = function($key, $recipeStats) {
+    $create = function ($key, $recipeStats) {
         $conn = getConn();
         $sqlArray = array(
             "likePeople" => function ($recipeStats) {
@@ -171,11 +171,11 @@ function statsMethod(string $key): void
         $conn->close();
     };
 
-    $delete = function($key, $recipeStats) {
+    $delete = function ($key, $recipeStats) {
         $conn = getConn();
 
         $sqlArray = array(
-            "likePeople" => function($recipeStats) {
+            "likePeople" => function ($recipeStats) {
                 $likeCount = $recipeStats['likeNumber'] - 1;
                 $index = array_search(getUserData('username'), $recipeStats['likePeople']);
                 unset($recipeStats['likePeople'][$index]);

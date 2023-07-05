@@ -33,7 +33,7 @@ p {
     word-wrap: break-word;
 }
 
-/* Utility Class */
+/* Background */
 .bg-black {
     background-color: var(--black);
     color: var(--white);
@@ -44,6 +44,7 @@ p {
     color: var(--black);
 }
 
+/* Flex */
 .flex-box {
     display: flex;
 }
@@ -57,6 +58,14 @@ p {
     justify-content: center;
 }
 
+.main-box {
+    background-color: var(--header-bg-color);
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+
+/* Button */
 .button {
     background-color: transparent;
     border: 0;
@@ -84,21 +93,32 @@ p {
     border: 1px solid white;
 }
 
+/* Img */
 .img {
     width: 100%;
     height: auto;
     border-radius: 1rem;
 }
 
+
+/* Container */
 .container {
     padding: 3rem 2rem;
 }
 
+/* Container Header */
 .container__header {
     font-size: clamp(2rem, 5vw, 3rem);
-    padding-bottom: 1rem;
+    padding-bottom: .5rem;
+    margin-bottom: 2rem;
 }
 
+.container__header--hr {
+    border-bottom: 1px solid var(--white);
+}
+
+
+/* Display */
 .none {
     display: none;
 }

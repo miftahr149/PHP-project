@@ -1,6 +1,10 @@
-<?php include("../template/home-head.php") ?>
-<?php formMethod(); ?>
-<?php $state = getState() ?>
+<?php 
+include("../template/home-head.php");
+formMethod();
+$state = getState(); 
+$editRecipeData = getEditRecipeData($state);
+?>
+
 
 <link rel="stylesheet" href="../css/create.css?v=<?php echo time() ?>">
 <title><?php echo ucfirst($state) ?></title>
@@ -160,23 +164,33 @@ function deleteRecipe(): void
 
 function getState(): string
 {
-    if (isset($_SESSION['edit_recipe'])) return "edit";
+    if (isset($_POST['editRecipe'])) return "edit";
     return "create";
 }
 
 function getRecipe(string $key): mixed
 {
-    if (empty($_SESSION['edit_recipe'][$key])) return null;
-    return $_SESSION['edit_recipe'][$key];
+    global $editRecipeData;
+    if (empty($editRecipeData[$key])) return null;
+    return $editRecipeData[$key];
 }
 
 function getRecipeArray(string $key): void
 {
     if (empty(getRecipe($key))) return;
     $container = $key;
-    foreach(getRecipe($key) as $text) {
+    foreach(json_decode(getRecipe($key)) as $text) {
         include('../template/recipe-list.php');
     }
+}
+
+function getEditRecipeData(string $state): array | null
+{
+    if ($state === 'create') return null;
+    $recipeId = $_POST['recipeId'];
+    $conn = getConn();
+    $sql = "SELECT * FROM recipes WHERE id='$recipeId'";
+    return $conn->query($sql)->fetch_assoc();
 }
 
 function deleteButton(string $state): void

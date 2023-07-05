@@ -3,7 +3,9 @@ include("../template/home-head.php");
 formMethod();
 $profileData = getProfileData();
 ?>
+
 <link rel="stylesheet" href="../css/profile.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../css/recipe-card.css?v=<?php echo time(); ?>">
 <title><?php echo ucfirst($profileData['username']) ?></title>
 </head>
 
@@ -13,14 +15,21 @@ $profileData = getProfileData();
     <main class="main flex-box flex-grow">
         <div class="background__container">
             <div class="background flex-box" style="<?php getBackground($profileData) ?>">
-                <div class="background__filler background__filler--left flex-box flex-grow box--padding">
+                <div class="background__filler flex-box flex-grow box--padding">
                     <p><?php echo $profileData['first_name'] . " " . $profileData['last_name'] ?></p>
                     <p class="username"><?php echo $profileData['username'] ?></p>
                 </div>
-                <div class="background__filler background__filler--right flex-box flex-grow box--padding">
-                    <?php editProfile($profileData) ?>
+                <div class="background__filler flex-box flex-grow box--padding">
+                    <div class="edit-button__wrapper flex-box">
+                        <?php editProfile($profileData) ?>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="container flex-grow">
+            <h2 class="container__header container__header--hr">Recipes</h2>
+            <?php getUserRecipes($profileData) ?>
         </div>
     </main>
 
@@ -32,35 +41,35 @@ $profileData = getProfileData();
             <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data" class="edit edit-window--padding flex-grow">
                 <div class="flex-box" style="gap: 1.5rem">
                     <div class="flex-grow">
-                        <label for="firstName" class="block">First Name</label>
+                        <p class="block">First Name</p>
                         <input type="text" name="firstName" class="edit__input" value="<?php echo $profileData['first_name'] ?>">
                     </div>
                     <div class="flex-grow">
-                        <label for="lastName" class="block">Last Name</label>
+                        <p class="block">Last Name</p>
                         <input type="text" name="lastName" class="edit__input" value="<?php echo $profileData['last_name'] ?>">
                     </div>
                 </div>
 
                 <div class="edit--margin-top" style="margin-top: 1rem">
-                    <label for="imageBackground">Background Image </label>
+                    <p>Background Image </p>
                     <input type="file" name="imageBackground" class="edit__input" value="<?php echo $profileData['image_background'] ?>">
                 </div>
 
                 <div class="flex-box edit--margin-top" style="gap: 1.5rem;">
                     <div class="flex-grow">
-                        <label for="city" class="block">City</label>
+                        <p class="block">City</p>
                         <input type="text" name="city" class="edit__input" value="<?php echo $profileData['city'] ?>">
                     </div>
                     <div class="flex-grow">
-                        <label for="country" class="block">Country</label>
+                        <p class="block">Country</p>
                         <input type="text" name="country" class="edit__input" value="<?php echo $profileData['country'] ?>">
                     </div>
                 </div>
 
                 <div class="edit--margin-top">
-                    <label for="bio" class="block">Bio</label>
+                    <p class="block">Bio</p>
                     <textarea name="bio" rows="2" class="edit__input">
-                            <?php echo $profileData['bio'] ?>
+                        <?php echo $profileData['bio'] ?>
                     </textarea>
                 </div>
 
@@ -71,6 +80,7 @@ $profileData = getProfileData();
         </div>
     </div>
 
+    
     <div class="black-screen flex-box flex-center none" style="<?php isBackgroundChange(); ?>" id="editBackground">
         <div class="black-screen--window flex-box edit-window--padding">
             <button class="back-button" onclick="showFunction('#editBackground')"></button>
@@ -83,7 +93,7 @@ $profileData = getProfileData();
                     </div>
                 </div>
             </div>
-
+            
             <form action="" method="get">
                 <input type="text" id="topBackground" name="topBackground" class=none value="0">
                 <input type="text" name="username" value=<?php echo $profileData['username'] ?> class="none">
@@ -115,8 +125,8 @@ function getProfileData(): array
 
 function formMethod(): void
 {
-    if (isset($_POST['editProfile'])) editProfileFunction();
     if (isset($_GET['editBackground'])) editBackgroundFunction();
+    if (isset($_POST['editProfile'])) editProfileFunction();
 }
 
 function getBackground(array $profileData): void
@@ -146,7 +156,7 @@ function editProfile(array $profileData): void
     if ($profileData['username'] !== getUserData('username')) return;
     echo
     '
-    <button class="edit-button button button--white-border button--white-hover" onclick=showFunction("#edit")>Edit</button>
+    <button class="edit-button button" onclick=showFunction("#edit")>Edit</button>
     ';
 }
 
@@ -198,6 +208,22 @@ function editBackgroundFunction(): void
     $sql = "UPDATE account SET image_background_top = '$topBackground' WHERE username = '$username'";
     $conn->query($sql);
     $conn->close();
+}
+
+function getUserRecipes(array $profileData): void
+{
+    $conn = getConn();
+    $username = $profileData['username'];
+    $sql = "SELECT * FROM recipes WHERE author = '$username'";
+
+    $results = $conn->query($sql);
+    foreach ($results as $result) {
+        extract($result);
+        $sql = "SELECT * FROM recipes_stats WHERE id = '$id'";
+        $recipeData = $conn->query($sql)->fetch_assoc();
+        extract($recipeData);
+        include("../template/recipe-card.php");
+    }
 }
 
 ?>

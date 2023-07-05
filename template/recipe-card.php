@@ -1,7 +1,7 @@
 <div class="recipe-card main-box flex-box">
     <div class="recipe-card__title flex-box">
         <form action="../view/profile.php" method="get">
-            <input type="submit" name="author" value="<?php echo $author ?>" class="button button--underline-hover">
+            <input type="submit" name="username" value="<?php echo $author ?>" class="button button--underline-hover">
         </form>
         <p>/</p>
         <form action="../view/recipe.php" method="get">
