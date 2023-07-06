@@ -1,5 +1,5 @@
-<?php 
-include("../template/home-head.php"); 
+<?php
+include("../template/home-head.php");
 $recipe = getRecipeData();
 getFormMethod();
 ?>
@@ -15,11 +15,11 @@ getFormMethod();
         <div class="title">
             <h1><?php echo $recipe['title'] ?></h1>
             <div class="header-author flex-box flex-grow" method="get">
-                <?php formRecipeId() ?>
                 <form class="header-author__left" action="profile.php">
                     <input type="submit" name="username" value="<?php echo $recipe['author'] ?>" class="author button button--underline-hover">
                 </form>
                 <form class="header-author__right flex-box flex-grow">
+                    <?php formRecipeId() ?>
                     <input type="submit" name="like" value="<?php echo isUser('likePeople') ?>" class="stats-button heart-button button">
                     <input type="submit" name="save" value="<?php echo isUser('savedPeople') ?>" class="stats-button button save-button">
                 </form>

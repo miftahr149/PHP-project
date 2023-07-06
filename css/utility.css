@@ -23,6 +23,9 @@ body {
     
     display: flex;
     flex-direction: column;
+
+    background-color: #0d1117;
+    color: white;
 }
 
 img {

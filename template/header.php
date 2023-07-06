@@ -5,8 +5,8 @@
         <a href="../view/home.php" class="">
             <img src="../favicon.ico" alt="meal master icon" width=32 height=32>
         </a>
-        <a href="" class="header__menu flex-box flex-center">Explore</a>
-        <a href="" class="header__menu flex-box flex-center">Saved</a>
+        <a href="../view/explore.php" class="header__menu flex-box flex-center">Explore</a>
+        <a href="../view/saved.php" class="header__menu flex-box flex-center">Saved</a>
     </section>
 
     <section class="header__right">
