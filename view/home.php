@@ -1,8 +1,6 @@
 <?php
-
-use function PHPSTORM_META\type;
-
- include("../template/home-head.php") ?>
+include("../template/home-head.php");
+?>
 <link rel="stylesheet" href="../css/home.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="../css/recipe-card.css?v=<?php echo time(); ?>">
 <title>MealMaster</title>
@@ -59,11 +57,13 @@ use function PHPSTORM_META\type;
 
 </html>
 
+<?php $conn->close() ?>
+
 <?php
 
 function getUserRecipes(): void
 {
-    $conn = getConn();
+    global $conn;
     $author = getUserData('username');
     $sql = "SELECT * FROM recipes WHERE
         author = '$author';";
@@ -75,8 +75,6 @@ function getUserRecipes(): void
         $id = $result['id'];
         include("../template/user-recipes.php");
     }
-
-    $conn->close();
 }
 
 ?>

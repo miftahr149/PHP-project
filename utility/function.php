@@ -8,7 +8,7 @@ function sendError(string $error)
     ";
 }
 
-function isLog(): void {
+function isLogin(): void {
     if (empty($_SESSION['user_data'])) header('Location: ../index.php');
 }
 
@@ -27,12 +27,16 @@ function getMostTrendingRecipes(): void
     }
 }
 
-$logoutFunction = function () {
-    if ($_SERVER['REQUEST_METHOD'] != "GET") return null;
-    if (empty($_GET['logout'])) return null;
+function getUserData(string $property): mixed
+{
+    return $_SESSION['user_data'][$property];
+}
+
+function isUserLogout():  void
+{
+    if ($_SERVER['REQUEST_METHOD'] != "GET") return;
+    if (empty($_GET['logout'])) return;
     unset($_SESSION['user_data']);
     header("Locations: ../index.php");
-};
-
-$logoutFunction();
+}
 

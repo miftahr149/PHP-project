@@ -2,7 +2,7 @@
 
 include("../utility/function.php");
 include("../utility/database.php");
-
+$conn = getConn();
 ?>
 
 <!DOCTYPE html>
@@ -63,49 +63,69 @@ include("../utility/database.php");
 
 </html>
 
+<?php $conn->close(); ?>
+
 <?php
 
 function postMethod()
 {
     if ($_SERVER['REQUEST_METHOD'] != 'POST') return;
+    $registerData = getRegisterData();
+    if (!checkError($registerData)) return;
+    registerUser($registerData);
+    header("Location: login.php");
+}
 
-    $username = filter_input(
-        INPUT_POST,
-        'username',
-        FILTER_SANITIZE_SPECIAL_CHARS,
+function getRegisterData(): array
+{
+    $filter = function (string $property) {
+        return filter_input(
+            INPUT_POST,
+            $property,
+            FILTER_SANITIZE_SPECIAL_CHARS,
+        );
+    };
+
+    return array(
+        "username" => $filter("username"),
+        "password" => $filter("password"),
+        "confirmPassword" => $filter("password2")
     );
+}
 
-    $password = filter_input(
-        INPUT_POST,
-        'password',
-        FILTER_SANITIZE_SPECIAL_CHARS,
-    );
+function checkError(array $registerData): bool
+{
+    $errorFunction = function (string $errorMessage): bool {
+        sendError($errorMessage);
+        return false;
+    };
 
-    $confirm_password = filter_input(
-        INPUT_POST,
-        'password2',
-        FILTER_SANITIZE_SPECIAL_CHARS,
-    );
+    $isEmpty = function (array $registerData): bool {
+        foreach ($registerData as $key => $value) {
+            if (empty($value)) return true;
+        };
+        return false;
+    };
 
-
-
-    if (empty($username) or empty($password) or empty($confirm_password)) {
-        sendError("You haven't enter your username or password!");
+    if ($isEmpty($registerData)) {
+        return $errorFunction("You haven't enter your username or password!");
     }
 
-    if ($password != $confirm_password) {
-        sendError("your password doesn't match with the confirm one!");
+    if ($registerData['password'] != $registerData['confirmPassword']) {
+        return $errorFunction("your password doesn't match with the confirm one!");
     }
 
+    return true;
+}
+
+function registerUser(array $registerData): void
+{
+    global $conn;
+    extract($registerData);
     $password = password_hash($password, PASSWORD_DEFAULT);
-
-    $conn = getConn();
     $sql = "INSERT INTO account (username, password)
             VALUES ('$username', '$password')";
     $conn->query($sql);
-    $conn->close();
-
-    header("Location: login.php");
 }
 
 ?>

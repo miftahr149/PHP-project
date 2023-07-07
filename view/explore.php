@@ -8,7 +8,7 @@ $conn = getConn();
 <title>Explore</title>
 </head>
 
-<body>
+<body class="body--dark-theme">
     <?php include("../template/header.php") ?>
 
     <main class="container">

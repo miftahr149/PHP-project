@@ -23,9 +23,6 @@ body {
     
     display: flex;
     flex-direction: column;
-
-    background-color: #0d1117;
-    color: white;
 }
 
 img {
@@ -45,6 +42,11 @@ p {
 .bg-white {
     background-color: var(--white);
     color: var(--black);
+}
+
+.body--dark-theme {
+    background-color: #0d1117;
+    color: white;
 }
 
 /* Flex */

@@ -3,13 +3,10 @@
 session_start();
 include("../utility/function.php");
 include("../utility/database.php");
-isLog();
+isLogin();
+isUserLogout();
 
-function getUserData(string $property): mixed
-{
-    return $_SESSION['user_data'][$property];
-}
-
+$conn = getConn();
 ?>
 
 <!DOCTYPE html>

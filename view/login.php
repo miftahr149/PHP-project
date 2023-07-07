@@ -3,7 +3,7 @@
 include("../utility/function.php");
 include("../utility/database.php");
 session_start();
-
+$conn = getConn();
 ?>
 
 
@@ -63,43 +63,56 @@ session_start();
 
 </html>
 
+<?php $conn->close(); ?>
+
 <?php
 
 function postMethod()
 {
     if ($_SERVER["REQUEST_METHOD"] != "POST") return;
 
-    $username = filter_input(
-        INPUT_POST,
-        "username",
-        FILTER_SANITIZE_SPECIAL_CHARS
-    );
+    $loginData = getLoginData();
+    if (isEmpty($loginData)) return;
 
-    $password = filter_input(
-        INPUT_POST,
-        "password",
-        FILTER_SANITIZE_SPECIAL_CHARS
-    );
-
-    if (empty($username) or empty($password)) {
-        sendError("You haven't enter username or password!");
-    }
-
+    extract($loginData);
     $user_data = getAccount($username);
     if (empty($user_data)) return;
-
     if (!password_verify($password, $user_data['password'])) {
         sendError("Incorect Password!");
         return;
     }
-
+    
     $_SESSION["user_data"] = $user_data;
     header("Location: home.php");
 }
 
-function getAccount(string $username) : null | array | false
+function isEmpty(array $loginData): bool
+{
+    foreach($loginData as $key => $value) {
+        if (empty($value)) return true;
+    }
+    return false;
+}
+
+function getLoginData(): array 
+{
+    $filter = function(string $property) {
+        return filter_input(
+            INPUT_POST,
+            $property,
+            FILTER_SANITIZE_SPECIAL_CHARS
+        );
+    };
+
+    return array(
+        'username' => $filter('username'),
+        'password' => $filter('password')
+    );
+}
+
+function getAccount(string $username) : null | array
 {   
-    $conn = getConn();
+    global $conn;
     $sql = "SELECT * FROM account WHERE username = '$username'";
     $result = $conn->query($sql);
 
@@ -109,7 +122,6 @@ function getAccount(string $username) : null | array | false
     }
 
     $row = mysqli_fetch_assoc($result);
-    $conn->close();
     return $row;
 }
 

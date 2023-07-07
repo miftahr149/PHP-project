@@ -88,6 +88,8 @@ $editRecipeData = getEditRecipeData($state);
 
 </html>
 
+<?php $conn->close() ?>
+
 <?php
 
 function formMethod(): void
@@ -120,16 +122,13 @@ function createRecipe(): void
     if (empty($inputValue)) return;
     extract($inputValue);
 
-    $conn = getConn();
+    global $conn;
     $sql = "INSERT INTO recipes (author, title, description, ingredients, instruction)
             VALUES ('$author', '$title', '$desc', '$ingredients', '$instruction');";
 
     $conn->query($sql);
-
     $sql = "INSERT INTO recipes_stats () VALUES ()";
     $conn->query($sql);
-    $conn->close();
-
     header("Location: home.php");
 }
 
@@ -140,11 +139,10 @@ function editRecipe(): void
     extract($inputValue);
 
     $id = getRecipe('id');
-    $conn = getConn();
+    global $conn;
     $sql = "UPDATE recipes SET author='$author', title='$title', description='$desc', 
             ingredients='$ingredients', instruction='$instruction' WHERE id='$id'";
     $conn->query($sql);
-    $conn->close();
 
     unset($_SESSION['edit_recipe']);
     header("Location: home.php");
@@ -152,13 +150,10 @@ function editRecipe(): void
 
 function deleteRecipe(): void
 {
-    $conn = getConn();
+    global $conn;
     $id = getRecipe("id");
     $sql = "DELETE FROM recipes WHERE id='$id'";
     $conn->query($sql);
-    $conn->close();
-
-    unset($_SESSION['edit_recipe']);
     header("Location: home.php");
 }
 
@@ -188,7 +183,7 @@ function getEditRecipeData(string $state): array | null
 {
     if ($state === 'create') return null;
     $recipeId = $_POST['recipeId'];
-    $conn = getConn();
+    global $conn;
     $sql = "SELECT * FROM recipes WHERE id='$recipeId'";
     return $conn->query($sql)->fetch_assoc();
 }
